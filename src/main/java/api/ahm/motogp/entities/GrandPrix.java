@@ -3,21 +3,21 @@ package api.ahm.motogp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="constructor")
-public class Constructor {
+@Table(name = "grandprix")
+public class GrandPrix {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
-
+    @Column(name = "circuit_name")
+    private String circuitName;
     @ManyToOne
     @JoinColumn(name="country")
     private Country country;
 
-    public Constructor() {
+    public GrandPrix() {
     }
 
     public int getId() {
@@ -34,6 +34,14 @@ public class Constructor {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCircuitName() {
+        return circuitName;
+    }
+
+    public void setCircuitName(String circuitName) {
+        this.circuitName = circuitName;
     }
 
     public Country getCountry() {

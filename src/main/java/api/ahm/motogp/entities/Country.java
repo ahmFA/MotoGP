@@ -3,21 +3,17 @@ package api.ahm.motogp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="constructor")
-public class Constructor {
+@Table(name="country")
+public class Country {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
     @Column(name="name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name="country")
-    private Country country;
-
-    public Constructor() {
+    public Country() {
     }
 
     public int getId() {
@@ -34,13 +30,5 @@ public class Constructor {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
     }
 }

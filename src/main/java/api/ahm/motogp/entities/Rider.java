@@ -19,14 +19,16 @@ public class Rider {
     private int number;
     @Column(name="birthday")
     private Date birthday;
-    @Column(name="country")
-    private String country;
+
+    @ManyToOne
+    @JoinColumn(name="country_id")
+    private Country country;
 
     public Rider(){
 
     }
 
-    public Rider(int id, String name, int number, Date birthday, String country) {
+    public Rider(int id, String name, int number, Date birthday, Country country) {
         this.id = id;
         this.name = name;
         this.number = number;
@@ -66,11 +68,11 @@ public class Rider {
         this.number = number;
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 }
