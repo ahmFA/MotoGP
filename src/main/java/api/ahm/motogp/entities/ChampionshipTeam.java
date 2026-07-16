@@ -41,12 +41,12 @@ public class ChampionshipTeam {
         this.name = name;
     }
 
-    public Constructor getConstructorId() {
+    public Constructor getConstructor() {
         return constructor;
     }
 
-    public void setConstructorId(Constructor constructorId) {
-        this.constructor = constructorId;
+    public void setConstructor(Constructor constructor) {
+        this.constructor = constructor;
     }
 
     public Championship getChampionship() {

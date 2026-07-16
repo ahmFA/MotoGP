@@ -1,12 +1,17 @@
 package api.ahm.motogp.controller;
 
+import api.ahm.motogp.dto.CreateRiderRequest;
+import api.ahm.motogp.entities.Country;
 import api.ahm.motogp.entities.Rider;
+import api.ahm.motogp.repositories.CountryRepository;
 import api.ahm.motogp.repositories.RiderRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -14,18 +19,27 @@ import java.util.List;
 public class RiderController {
 
     private final RiderRepository riderRepository;
+    private final CountryRepository countryRepository;
 
-    public RiderController(RiderRepository riderRepository) {
+    public RiderController(RiderRepository riderRepository, CountryRepository countryRepository) {
         this.riderRepository = riderRepository;
+        this.countryRepository = countryRepository;
     }
 
     @GetMapping
-    public List<Rider> getRiders(){
-        return riderRepository.findAll();
+    public ResponseEntity<List<Rider>> getRiders(){
+        List<Rider> riders =  riderRepository.findAll();
+        if(riders.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(riders);
     }
 
     @GetMapping("/{id}")
-    public Rider getRider(@PathVariable("id") int id){
-        return riderRepository.getReferenceById(id);
+    public ResponseEntity<Rider> getRider(@PathVariable int id){
+        return riderRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
 }

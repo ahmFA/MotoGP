@@ -12,11 +12,11 @@ public class ChampionshipRider {
 
     @ManyToOne
     @JoinColumn(name="rider_id")
-    private ChampionshipRider riderId;
+    private Rider rider;
 
     @ManyToOne
     @JoinColumn(name="championship_id")
-    private Championship championshipId;
+    private Championship championship;
 
     @ManyToOne
     @JoinColumn(name="team_id")
@@ -36,20 +36,20 @@ public class ChampionshipRider {
         this.id = id;
     }
 
-    public ChampionshipRider getRiderId() {
-        return riderId;
+    public Rider getRider() {
+        return rider;
     }
 
-    public void setRiderId(ChampionshipRider riderId) {
-        this.riderId = riderId;
+    public void setRider(Rider rider) {
+        this.rider = rider;
     }
 
-    public Championship getChampionshipId() {
-        return championshipId;
+    public Championship getChampionship() {
+        return championship;
     }
 
-    public void setChampionshipId(Championship championshipId) {
-        this.championshipId = championshipId;
+    public void setChampionship(Championship championship) {
+        this.championship = championship;
     }
 
     public int getNumber() {

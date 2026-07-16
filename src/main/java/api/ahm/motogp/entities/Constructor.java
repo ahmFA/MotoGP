@@ -14,7 +14,7 @@ public class Constructor {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name="country")
+    @JoinColumn(name="country_id")
     private Country country;
 
     public Constructor() {
