@@ -41,5 +41,25 @@ public class RiderController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public ResponseEntity<Rider> addRider(@RequestBody CreateRiderRequest riderRequest, UriComponentsBuilder ucb){
+        if (riderRequest.number() == null || riderRequest.countryId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
+        try {
+            Country country = countryRepository.getReferenceById(riderRequest.countryId());
+            Rider rider = new Rider();
+            rider.setName(riderRequest.name());
+            rider.setNumber(riderRequest.number());
+            rider.setBirthday(riderRequest.birthday());
+            rider.setCountry(country);
+
+            Rider newRider = riderRepository.save(rider);
+            URI location = ucb.path("/riders/{id}").buildAndExpand(newRider.getId()).toUri();
+            return ResponseEntity.created(location).build();
+        }catch(EntityExistsException | EntityNotFoundException e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
