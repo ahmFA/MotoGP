@@ -16,6 +16,10 @@ public class Country {
     public Country() {
     }
 
+    public Country(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
