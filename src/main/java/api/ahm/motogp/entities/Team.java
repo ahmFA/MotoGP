@@ -14,6 +14,9 @@ public class Team {
     @Column(name="name")
     private String name;
 
+    @Column(name="active")
+    private boolean active;
+
     public Team() {
     }
 
@@ -31,5 +34,13 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

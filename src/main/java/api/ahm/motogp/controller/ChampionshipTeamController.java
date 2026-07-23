@@ -1,14 +1,16 @@
 package api.ahm.motogp.controller;
 
+import api.ahm.motogp.entities.Championship;
 import api.ahm.motogp.entities.ChampionshipTeam;
+import api.ahm.motogp.entities.Constructor;
+import api.ahm.motogp.repositories.ChampionshipRepository;
 import api.ahm.motogp.repositories.ChampionshipTeamRepository;
-import org.springframework.http.HttpStatus;
+import api.ahm.motogp.repositories.ConstructorRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,9 +18,15 @@ import java.util.List;
 public class ChampionshipTeamController {
 
     private final ChampionshipTeamRepository championshipTeamRepository;
+    private final ChampionshipRepository championshipRepository;
+    private final ConstructorRepository constructorRepository;
 
-    public ChampionshipTeamController(ChampionshipTeamRepository championshipTeamRepository) {
+    public ChampionshipTeamController(ChampionshipTeamRepository championshipTeamRepository,
+                                      ChampionshipRepository championshipRepository,
+                                      ConstructorRepository constructorRepository) {
         this.championshipTeamRepository = championshipTeamRepository;
+        this.championshipRepository = championshipRepository;
+        this.constructorRepository = constructorRepository;
     }
 
     @GetMapping
@@ -35,5 +43,59 @@ public class ChampionshipTeamController {
         return championshipTeamRepository.findByChampionshipIdAndId(championshipId, id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<ChampionshipTeam> addChampionshipTeam(@PathVariable int championshipId,
+                                                               @RequestBody ChampionshipTeam championshipTeam,
+                                                               UriComponentsBuilder ucb) {
+        Championship championship = getChampionshipReference(championshipId);
+        Constructor constructor = getConstructorReference(championshipTeam.getConstructor());
+        if (championship == null || constructor == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        championshipTeam.setId(0);
+        championshipTeam.setChampionship(championship);
+        championshipTeam.setConstructor(constructor);
+        ChampionshipTeam newChampionshipTeam = championshipTeamRepository.save(championshipTeam);
+        URI location = ucb.path("/championships/{championshipId}/teams/{id}")
+                .buildAndExpand(championshipId, newChampionshipTeam.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ChampionshipTeam> putChampionshipTeam(@PathVariable int championshipId,
+                                                               @PathVariable int id,
+                                                               @RequestBody ChampionshipTeam championshipTeam) {
+        if (championshipTeamRepository.findByChampionshipIdAndId(championshipId, id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Championship championship = getChampionshipReference(championshipId);
+        Constructor constructor = getConstructorReference(championshipTeam.getConstructor());
+        if (championship == null || constructor == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        championshipTeam.setId(id);
+        championshipTeam.setChampionship(championship);
+        championshipTeam.setConstructor(constructor);
+        return ResponseEntity.ok(championshipTeamRepository.save(championshipTeam));
+    }
+
+    private Championship getChampionshipReference(int championshipId) {
+        if (!championshipRepository.existsById(championshipId)) {
+            return null;
+        }
+        return championshipRepository.getReferenceById(championshipId);
+    }
+
+    private Constructor getConstructorReference(Constructor constructor) {
+        if (constructor == null || constructor.getId() == 0 || !constructorRepository.existsById(constructor.getId())) {
+            return null;
+        }
+        return constructorRepository.getReferenceById(constructor.getId());
     }
 }

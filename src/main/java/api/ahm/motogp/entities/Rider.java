@@ -24,16 +24,20 @@ public class Rider {
     @JoinColumn(name="country_id")
     private Country country;
 
+    @Column(name="active")
+    private boolean active;
+
     public Rider(){
 
     }
 
-    public Rider(int id, String name, int number, Date birthday, Country country) {
+    public Rider(int id, String name, int number, Date birthday, Country country, boolean active) {
         this.id = id;
         this.name = name;
         this.number = number;
         this.birthday = birthday;
         this.country = country;
+        this.active = active;
     }
 
     public Date getBirthday() {
@@ -74,5 +78,13 @@ public class Rider {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
