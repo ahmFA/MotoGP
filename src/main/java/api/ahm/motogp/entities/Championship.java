@@ -3,7 +3,17 @@ package api.ahm.motogp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "championship")
+@Table(name = "championship",
+            uniqueConstraints = {
+            @UniqueConstraint(
+                    name = "uk_championship_year_category",
+                    columnNames = {
+                            "category_id",
+                            "year"
+                    }
+            )
+        }
+)
 public class Championship {
 
     @Id

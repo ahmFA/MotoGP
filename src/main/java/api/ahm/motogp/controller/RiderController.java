@@ -7,12 +7,15 @@ import api.ahm.motogp.repositories.CountryRepository;
 import api.ahm.motogp.repositories.RiderRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/riders")
@@ -27,11 +30,18 @@ public class RiderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Rider>> getRiders(){
-        List<Rider> riders =  riderRepository.findAll();
-        if(riders.isEmpty())
+    public ResponseEntity<List<Rider>> getRiders(Pageable pageable){
+        Page<Rider> page =  riderRepository.findAll(
+                PageRequest.of(
+                        pageable.getPageNumber(),
+                        pageable.getPageSize(),
+                        pageable.getSortOr(Sort.by(Sort.DEFAULT_DIRECTION, "name"))
+                )
+        );
+        if(page.getTotalElements() == 0){
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(riders);
+        }
+        return ResponseEntity.ok(page.getContent());
     }
 
     @GetMapping("/{id}")
@@ -62,4 +72,30 @@ public class RiderController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Rider> putRider(@PathVariable int id, @RequestBody CreateRiderRequest riderRequest){
+        try {
+            Rider rider = riderRepository.getReferenceById(id);
+            Country country = countryRepository.getReferenceById(riderRequest.countryId());
+            Rider newRider = new Rider(id, riderRequest.name(), riderRequest.number(), riderRequest.birthday(), country, rider.isActive());
+            riderRepository.save(newRider);
+            return ResponseEntity.ok(newRider);
+        }catch(EntityExistsException | EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Rider> deleteRider(@PathVariable int id){
+        try {
+            Rider rider = riderRepository.getReferenceById(id);
+            rider.setActive(false);
+            riderRepository.save(rider);
+            return ResponseEntity.noContent().build();
+        }catch(EntityExistsException | EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

@@ -9,5 +9,7 @@ import java.util.Optional;
 public interface ChampionshipEventResultRepository extends JpaRepository<ChampionshipEventResult, Integer> {
     List<ChampionshipEventResult> getChampionshipEventResultByChampionshipEventId(int eventId);
 
+    Optional<ChampionshipEventResult> findByChampionshipEventIdAndId(int eventId, int id);
+
     Optional<ChampionshipEventResult> getChampionshipEventResultByChampionshipEventIdAndChampionshipRiderId(int eventId, int riderId);
 }
