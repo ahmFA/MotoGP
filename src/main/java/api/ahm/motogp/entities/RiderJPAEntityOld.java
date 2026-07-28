@@ -8,7 +8,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name="rider")
-public class Rider {
+public class RiderJPAEntityOld {
 
     @Id
     @GeneratedValue(strategy=IDENTITY)
@@ -27,11 +27,11 @@ public class Rider {
     @Column(name="active")
     private boolean active;
 
-    public Rider(){
+    public RiderJPAEntityOld(){
 
     }
 
-    public Rider(int id, String name, int number, Date birthday, Country country, boolean active) {
+    public RiderJPAEntityOld(int id, String name, int number, Date birthday, Country country, boolean active) {
         this.id = id;
         this.name = name;
         this.number = number;
