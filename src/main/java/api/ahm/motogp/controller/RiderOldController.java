@@ -1,62 +1,53 @@
 package api.ahm.motogp.controller;
 
-import api.ahm.motogp.dto.CreateRiderRequest;
+import api.ahm.motogp.dto.CreateRiderRequestDTO;
 import api.ahm.motogp.entities.Country;
-import api.ahm.motogp.entities.Rider;
+import api.ahm.motogp.entities.RiderJPAEntityOld;
 import api.ahm.motogp.repositories.CountryRepository;
 import api.ahm.motogp.repositories.RiderRepository;
+import api.ahm.motogp.services.RiderService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/riders")
-public class RiderController {
+@RequestMapping("/ridersss")
+public class RiderOldController {
 
     private final RiderRepository riderRepository;
     private final CountryRepository countryRepository;
+    private final RiderService riderService;
 
-    public RiderController(RiderRepository riderRepository, CountryRepository countryRepository) {
+    public RiderOldController(RiderRepository riderRepository, CountryRepository countryRepository, RiderService riderService) {
         this.riderRepository = riderRepository;
         this.countryRepository = countryRepository;
+        this.riderService = riderService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Rider>> getRiders(Pageable pageable){
-        Page<Rider> page =  riderRepository.findAll(
-                PageRequest.of(
-                        pageable.getPageNumber(),
-                        pageable.getPageSize(),
-                        pageable.getSortOr(Sort.by(Sort.DEFAULT_DIRECTION, "name"))
-                )
-        );
-        if(page.getTotalElements() == 0){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(page.getContent());
+    @ResponseStatus(HttpStatus.OK)
+    public List<RiderJPAEntityOld> getRiders(Pageable pageable){
+        return riderService.getRiders(pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Rider> getRider(@PathVariable int id){
-        return riderRepository.findById(id)
+    public ResponseEntity<RiderJPAEntityOld> getRider(@PathVariable int id){
+        return riderService.getRider(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Rider> addRider(@RequestBody CreateRiderRequest riderRequest, UriComponentsBuilder ucb){
-        if (riderRequest.number() == null || riderRequest.countryId() == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
+    @ResponseStatus(HttpStatus.CREATED)
+    public RiderJPAEntityOld addRider(@Valid @RequestBody CreateRiderRequestDTO riderRequest, UriComponentsBuilder ucb){
+        /*
         try {
             Country country = countryRepository.getReferenceById(riderRequest.countryId());
             Rider rider = new Rider();
@@ -71,14 +62,17 @@ public class RiderController {
         }catch(EntityExistsException | EntityNotFoundException e){
             return ResponseEntity.badRequest().build();
         }
+
+         */
+        return riderService.createRider(riderRequest);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Rider> putRider(@PathVariable int id, @RequestBody CreateRiderRequest riderRequest){
+    public ResponseEntity<RiderJPAEntityOld> putRider(@PathVariable int id, @RequestBody CreateRiderRequestDTO riderRequest){
         try {
-            Rider rider = riderRepository.getReferenceById(id);
+            RiderJPAEntityOld rider = riderRepository.getReferenceById(id);
             Country country = countryRepository.getReferenceById(riderRequest.countryId());
-            Rider newRider = new Rider(id, riderRequest.name(), riderRequest.number(), riderRequest.birthday(), country, rider.isActive());
+            RiderJPAEntityOld newRider = new RiderJPAEntityOld(id, riderRequest.name(), riderRequest.number(), riderRequest.birthday(), country, rider.isActive());
             riderRepository.save(newRider);
             return ResponseEntity.ok(newRider);
         }catch(EntityExistsException | EntityNotFoundException e){
@@ -87,9 +81,9 @@ public class RiderController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Rider> deleteRider(@PathVariable int id){
+    public ResponseEntity<RiderJPAEntityOld> deleteRider(@PathVariable int id){
         try {
-            Rider rider = riderRepository.getReferenceById(id);
+            RiderJPAEntityOld rider = riderRepository.getReferenceById(id);
             rider.setActive(false);
             riderRepository.save(rider);
             return ResponseEntity.noContent().build();
