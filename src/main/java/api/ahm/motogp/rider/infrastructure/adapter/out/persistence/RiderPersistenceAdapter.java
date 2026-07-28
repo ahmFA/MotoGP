@@ -41,7 +41,9 @@ public class RiderPersistenceAdapter  implements RiderRepositoryPort {
 
     @Override
     public Optional<Rider> getRider(int id) {
-        return riderRepository.findById(id).map(this::toDomain);
+        return riderRepository.findById(id)
+                .filter(RiderJPAEntity::isActive)
+                .map(this::toDomain);
     }
 
     @Override
