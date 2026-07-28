@@ -5,6 +5,8 @@ import api.ahm.motogp.rider.application.exception.RiderNameAlreadyExistsExceptio
 import api.ahm.motogp.rider.application.exception.RiderNotFoundException;
 import api.ahm.motogp.rider.application.exception.RiderNumberAlreadyExistException;
 import api.ahm.motogp.shared.country.exception.CountryNotFoundException;
+import api.ahm.motogp.team.application.exception.TeamNameAlreadyExistsException;
+import api.ahm.motogp.team.application.exception.TeamNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -58,6 +60,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RiderNumberAlreadyExistException.class)
     public ResponseEntity<?> handleRiderNumberAlreadyExistException(RiderNumberAlreadyExistException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    // TEAMS
+    @ExceptionHandler(TeamNotFoundException.class)
+    public ResponseEntity<?> handleTeamNotFoundException(TeamNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(TeamNameAlreadyExistsException.class)
+    public ResponseEntity<?> handleTeamNameAlreadyExistsException(TeamNameAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
