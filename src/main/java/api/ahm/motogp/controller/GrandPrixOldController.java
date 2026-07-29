@@ -4,6 +4,7 @@ import api.ahm.motogp.entities.Country;
 import api.ahm.motogp.entities.GrandPrix;
 import api.ahm.motogp.repositories.CountryRepository;
 import api.ahm.motogp.repositories.GrandPrixRepository;
+import api.ahm.motogp.services.GrandPrixService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -12,15 +13,19 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/grand-prixes")
-public class GrandPrixController {
+@RequestMapping("/grand-prixesss")
+public class GrandPrixOldController {
 
     private final GrandPrixRepository grandPrixRepository;
     private final CountryRepository countryRepository;
+    private final GrandPrixService grandPrixService;
 
-    public GrandPrixController(GrandPrixRepository grandPrixRepository, CountryRepository countryRepository) {
+    public GrandPrixOldController(GrandPrixRepository grandPrixRepository,
+                                  CountryRepository countryRepository,
+                                  GrandPrixService grandPrixService) {
         this.grandPrixRepository = grandPrixRepository;
         this.countryRepository = countryRepository;
+        this.grandPrixService = grandPrixService;
     }
 
     @GetMapping

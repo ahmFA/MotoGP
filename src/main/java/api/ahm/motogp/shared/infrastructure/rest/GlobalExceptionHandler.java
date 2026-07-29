@@ -1,6 +1,8 @@
 package api.ahm.motogp.shared.infrastructure.rest;
 
 import api.ahm.motogp.exceptions.ErrorResponseDTO;
+import api.ahm.motogp.grandprix.application.exception.GrandPrixNameAlreadyExistsException;
+import api.ahm.motogp.grandprix.application.exception.GrandPrixNotFoundException;
 import api.ahm.motogp.rider.application.exception.RiderNameAlreadyExistsException;
 import api.ahm.motogp.rider.application.exception.RiderNotFoundException;
 import api.ahm.motogp.rider.application.exception.RiderNumberAlreadyExistException;
@@ -71,6 +73,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(TeamNameAlreadyExistsException.class)
     public ResponseEntity<?> handleTeamNameAlreadyExistsException(TeamNameAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    // GRAND PRIXES
+    @ExceptionHandler(GrandPrixNotFoundException.class)
+    public ResponseEntity<?> handleGrandPrixNotFoundException(GrandPrixNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(GrandPrixNameAlreadyExistsException.class)
+    public ResponseEntity<?> handleGrandPrixNameAlreadyExistsException(GrandPrixNameAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
