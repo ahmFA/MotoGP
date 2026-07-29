@@ -1,11 +1,14 @@
 package api.ahm.motogp.shared.infrastructure.rest;
 
 import api.ahm.motogp.exceptions.ErrorResponseDTO;
+import api.ahm.motogp.championship.application.exception.ChampionshipAlreadyExistsException;
+import api.ahm.motogp.championship.application.exception.ChampionshipNotFoundException;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNameAlreadyExistsException;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNotFoundException;
 import api.ahm.motogp.rider.application.exception.RiderNameAlreadyExistsException;
 import api.ahm.motogp.rider.application.exception.RiderNotFoundException;
 import api.ahm.motogp.rider.application.exception.RiderNumberAlreadyExistException;
+import api.ahm.motogp.shared.category.exception.CategoryNotFoundException;
 import api.ahm.motogp.shared.country.exception.CountryNotFoundException;
 import api.ahm.motogp.team.application.exception.TeamNameAlreadyExistsException;
 import api.ahm.motogp.team.application.exception.TeamNotFoundException;
@@ -85,6 +88,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(GrandPrixNameAlreadyExistsException.class)
     public ResponseEntity<?> handleGrandPrixNameAlreadyExistsException(GrandPrixNameAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    // CHAMPIONSHIPS
+    @ExceptionHandler(ChampionshipNotFoundException.class)
+    public ResponseEntity<?> handleChampionshipNotFoundException(ChampionshipNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(ChampionshipAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipAlreadyExistsException(ChampionshipAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    // CATEGORIES
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<?> handleCategoryNotFoundException(CategoryNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
     }
 
     //COUNTRIES
