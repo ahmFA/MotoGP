@@ -4,11 +4,12 @@ import api.ahm.motogp.dto.PatchChampionshipRiderRequest;
 import api.ahm.motogp.entities.Championship;
 import api.ahm.motogp.entities.ChampionshipRider;
 import api.ahm.motogp.entities.ChampionshipTeam;
-import api.ahm.motogp.entities.Rider;
+import api.ahm.motogp.entities.RiderJPAEntityOld;
 import api.ahm.motogp.repositories.ChampionshipRepository;
 import api.ahm.motogp.repositories.ChampionshipRiderRepository;
 import api.ahm.motogp.repositories.ChampionshipTeamRepository;
 import api.ahm.motogp.repositories.RiderRepository;
+import api.ahm.motogp.services.ChampionshipRiderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,15 +26,18 @@ public class ChampionshipRiderController {
     private final ChampionshipRepository championshipRepository;
     private final ChampionshipTeamRepository championshipTeamRepository;
     private final RiderRepository riderRepository;
+    private final ChampionshipRiderService championshipRiderService;
 
     public ChampionshipRiderController(ChampionshipRiderRepository championshipRiderRepository,
                                        ChampionshipRepository championshipRepository,
                                        ChampionshipTeamRepository championshipTeamRepository,
-                                       RiderRepository riderRepository) {
+                                       RiderRepository riderRepository,
+                                       ChampionshipRiderService championshipRiderService) {
         this.championshipRiderRepository = championshipRiderRepository;
         this.championshipRepository = championshipRepository;
         this.championshipTeamRepository = championshipTeamRepository;
         this.riderRepository = riderRepository;
+        this.championshipRiderService = championshipRiderService;
     }
 
     @GetMapping
@@ -59,7 +63,7 @@ public class ChampionshipRiderController {
                                                                  @RequestBody ChampionshipRider championshipRider,
                                                                  UriComponentsBuilder ucb) {
         Championship championship = getChampionshipReference(championshipId);
-        Rider rider = getRiderReference(championshipRider.getRider());
+        RiderJPAEntityOld rider = getRiderReference(championshipRider.getRider());
         ChampionshipTeam team = getChampionshipTeamReference(championshipId, championshipRider.getTeam());
         if (championship == null || rider == null || team == null) {
             return ResponseEntity.badRequest().build();
@@ -107,7 +111,7 @@ public class ChampionshipRiderController {
         return championshipRepository.getReferenceById(championshipId);
     }
 
-    private Rider getRiderReference(Rider rider) {
+    private RiderJPAEntityOld getRiderReference(RiderJPAEntityOld rider) {
         if (rider == null || rider.getId() == 0 || !riderRepository.existsById(rider.getId())) {
             return null;
         }

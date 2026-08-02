@@ -6,6 +6,7 @@ import api.ahm.motogp.entities.Constructor;
 import api.ahm.motogp.repositories.ChampionshipRepository;
 import api.ahm.motogp.repositories.ChampionshipTeamRepository;
 import api.ahm.motogp.repositories.ConstructorRepository;
+import api.ahm.motogp.services.ChampionshipTeamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -20,13 +21,16 @@ public class ChampionshipTeamController {
     private final ChampionshipTeamRepository championshipTeamRepository;
     private final ChampionshipRepository championshipRepository;
     private final ConstructorRepository constructorRepository;
+    private final ChampionshipTeamService championshipTeamService;
 
     public ChampionshipTeamController(ChampionshipTeamRepository championshipTeamRepository,
                                       ChampionshipRepository championshipRepository,
-                                      ConstructorRepository constructorRepository) {
+                                      ConstructorRepository constructorRepository,
+                                      ChampionshipTeamService championshipTeamService) {
         this.championshipTeamRepository = championshipTeamRepository;
         this.championshipRepository = championshipRepository;
         this.constructorRepository = constructorRepository;
+        this.championshipTeamService = championshipTeamService;
     }
 
     @GetMapping

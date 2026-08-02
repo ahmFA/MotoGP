@@ -1,15 +1,16 @@
 package api.ahm.motogp.shared.infrastructure.rest;
 
+import api.ahm.motogp.championship.application.exception.*;
 import api.ahm.motogp.exceptions.ErrorResponseDTO;
-import api.ahm.motogp.championship.application.exception.ChampionshipAlreadyExistsException;
-import api.ahm.motogp.championship.application.exception.ChampionshipNotFoundException;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNameAlreadyExistsException;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNotFoundException;
+import api.ahm.motogp.rider.application.exception.RiderIsNotActiveException;
 import api.ahm.motogp.rider.application.exception.RiderNameAlreadyExistsException;
 import api.ahm.motogp.rider.application.exception.RiderNotFoundException;
 import api.ahm.motogp.rider.application.exception.RiderNumberAlreadyExistException;
 import api.ahm.motogp.shared.category.exception.CategoryNotFoundException;
 import api.ahm.motogp.shared.country.exception.CountryNotFoundException;
+import api.ahm.motogp.team.application.exception.TeamIsNotActiveException;
 import api.ahm.motogp.team.application.exception.TeamNameAlreadyExistsException;
 import api.ahm.motogp.team.application.exception.TeamNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -68,6 +69,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
+    @ExceptionHandler(RiderIsNotActiveException.class)
+    public ResponseEntity<?> handleRiderIsNotActiveException(RiderIsNotActiveException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
     // TEAMS
     @ExceptionHandler(TeamNotFoundException.class)
     public ResponseEntity<?> handleTeamNotFoundException(TeamNotFoundException ex) {
@@ -101,6 +107,49 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
+    // CHAMPIONSHIP TEAMS
+    @ExceptionHandler(ChampionshipTeamNotFoundException.class)
+    public ResponseEntity<?> handleChampionshipTeamNotFoundException(ChampionshipTeamNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(ChampionshipTeamAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipTeamAlreadyExistsException(ChampionshipTeamAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(ChampionshipTeamNameAlreadyExistsException.class)
+    public  ResponseEntity<?> handleChampionshipTeamNameAlreadyExistsException(ChampionshipTeamNameAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    // CHAMPIONSHIP RIDERS
+    @ExceptionHandler(ChampionshipRiderNotFoundException.class)
+    public ResponseEntity<?> handleChampionshipRiderNotFoundException(ChampionshipRiderNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(ChampionshipRiderAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipRiderAlreadyExistsException(ChampionshipRiderAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    // CHAMPIONSHIP GRAND PRIXES
+    @ExceptionHandler(ChampionshipGrandPrixNotFoundException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixNotFoundException(ChampionshipGrandPrixNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(ChampionshipGrandPrixAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixAlreadyExistsException(ChampionshipGrandPrixAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(TeamIsNotActiveException.class)
+    public ResponseEntity<?> handleTeamIsNotActiveException(TeamIsNotActiveException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
     // CATEGORIES
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<?> handleCategoryNotFoundException(CategoryNotFoundException ex) {
@@ -110,6 +159,12 @@ public class GlobalExceptionHandler {
     //COUNTRIES
     @ExceptionHandler(CountryNotFoundException.class)
     public ResponseEntity<?> handleCountryNotFoundException(CountryNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    // CONSTRUCTOR
+    @ExceptionHandler(ConstructorNotFoundException.class)
+    public ResponseEntity<?> handleConstructorNotFoundException(ConstructorNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
     }
 

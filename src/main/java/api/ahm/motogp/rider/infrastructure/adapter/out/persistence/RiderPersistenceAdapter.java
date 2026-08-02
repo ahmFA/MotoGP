@@ -114,6 +114,11 @@ public class RiderPersistenceAdapter  implements RiderRepositoryPort {
         return riderRepository.existsRiderByIdNotAndNumber(myId, number);
     }
 
+    @Override
+    public Boolean isActiveRider(int riderId) {
+        return riderRepository.existsRiderByIdAndActiveTrue(riderId);
+    }
+
     private Rider toDomain(RiderJPAEntity rider) {
         return new Rider(
                 rider.getId(),

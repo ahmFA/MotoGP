@@ -17,4 +17,5 @@ public interface TeamRepositoryPort {
     Team createTeam(CreateTeamCommand teamCommand);
     Team fullUpdateTeam(FullUpdateTeamCommand teamCommand);
     Team deleteTeam(Team team);
+    Boolean isActiveTeam(int teamId);
 }

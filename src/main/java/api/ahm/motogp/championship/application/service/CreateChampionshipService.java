@@ -1,7 +1,7 @@
 package api.ahm.motogp.championship.application.service;
 
 import api.ahm.motogp.championship.application.exception.ChampionshipAlreadyExistsException;
-import api.ahm.motogp.championship.application.port.in.CreateChampionshipCommand;
+import api.ahm.motogp.championship.application.port.in.command.CreateChampionshipCommand;
 import api.ahm.motogp.championship.application.port.in.CreateChampionshipUseCase;
 import api.ahm.motogp.championship.application.port.out.ChampionshipRepositoryPort;
 import api.ahm.motogp.championship.domain.model.Championship;

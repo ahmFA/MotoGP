@@ -84,6 +84,11 @@ public class TeamPersistenceAdapter implements TeamRepositoryPort {
         return toDomain(teamRepository.save(teamJPAEntity));
     }
 
+    @Override
+    public Boolean isActiveTeam(int teamId){
+        return teamRepository.existsTeamByIdAndActiveTrue(teamId);
+    }
+
     private Team toDomain(TeamJPAEntity team) {
         return new Team(
                 team.getId(),

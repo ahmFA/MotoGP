@@ -1,6 +1,6 @@
 package api.ahm.motogp.championship.application.port.out;
 
-import api.ahm.motogp.championship.application.port.in.CreateChampionshipCommand;
+import api.ahm.motogp.championship.application.port.in.command.CreateChampionshipCommand;
 import api.ahm.motogp.championship.domain.model.Championship;
 
 import java.util.List;

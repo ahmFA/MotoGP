@@ -1,6 +1,5 @@
-package api.ahm.motogp.championship.infrastructure.adapter.out;
+package api.ahm.motogp.championship.infrastructure.adapter.out.persistence;
 
-import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.ChampionshipJPAEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SpringDataChampionshipRepository extends JpaRepository<ChampionshipJPAEntity, Integer> {

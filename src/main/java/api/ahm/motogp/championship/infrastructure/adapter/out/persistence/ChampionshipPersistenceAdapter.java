@@ -1,9 +1,8 @@
 package api.ahm.motogp.championship.infrastructure.adapter.out.persistence;
 
-import api.ahm.motogp.championship.application.port.in.CreateChampionshipCommand;
+import api.ahm.motogp.championship.application.port.in.command.CreateChampionshipCommand;
 import api.ahm.motogp.championship.application.port.out.ChampionshipRepositoryPort;
 import api.ahm.motogp.championship.domain.model.Championship;
-import api.ahm.motogp.championship.infrastructure.adapter.out.SpringDataChampionshipRepository;
 import api.ahm.motogp.shared.category.exception.CategoryNotFoundException;
 import api.ahm.motogp.shared.category.infrastructure.adapter.out.persistence.CategoryJPAEntity;
 import api.ahm.motogp.shared.category.infrastructure.adapter.out.persistence.SpringDataCategoryRepository;
