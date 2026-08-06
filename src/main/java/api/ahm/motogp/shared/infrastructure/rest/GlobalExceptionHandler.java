@@ -4,6 +4,11 @@ import api.ahm.motogp.championship.application.exception.*;
 import api.ahm.motogp.exceptions.ErrorResponseDTO;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNameAlreadyExistsException;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNotFoundException;
+import api.ahm.motogp.identity.application.exception.UserEmailAlreadyExistsException;
+import api.ahm.motogp.identity.application.exception.UsernameAlreadyExistsException;
+import api.ahm.motogp.identity.domain.exception.InvalidEmailException;
+import api.ahm.motogp.identity.domain.exception.InvalidUsernameException;
+import api.ahm.motogp.identity.domain.exception.InvalidUsernameLengthException;
 import api.ahm.motogp.rider.application.exception.RiderIsNotActiveException;
 import api.ahm.motogp.rider.application.exception.RiderNameAlreadyExistsException;
 import api.ahm.motogp.rider.application.exception.RiderNotFoundException;
@@ -51,6 +56,37 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<?> handleIllegalStatusException(IllegalStateException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(bodyResponse(ex, HttpStatus.CONFLICT));
+    }
+
+    // USERS
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<?> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(UserEmailAlreadyExistsException.class)
+    public ResponseEntity<?> handleUserEmailAlreadyExistsException(UserEmailAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(InvalidUsernameException.class)
+    public ResponseEntity<?> handleInvalidUsernameException(InvalidUsernameException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(InvalidUsernameLengthException.class)
+    public ResponseEntity<?> handleInvalidUsernameLengthException(InvalidUsernameLengthException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<?> handleInvalidEmailException(InvalidEmailException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
     // RIDERS
