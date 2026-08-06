@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 
 public record EventCommand(
+        Integer id,
         int championshipGrandPrixId,
         @NotNull
         EventType eventType,

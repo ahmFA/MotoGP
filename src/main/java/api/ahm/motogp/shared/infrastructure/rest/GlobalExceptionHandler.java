@@ -145,6 +145,33 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
+    // CHAMPIONSHIP GRAND PRIX EVENTS
+    @ExceptionHandler(ChampionshipEventDuplicatedInRequestException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventDuplicatedInRequestException(ChampionshipEventDuplicatedInRequestException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(ChampionshipEventAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventAlreadyExistsException(ChampionshipEventAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(ChampionshipEventNotFoundException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventNotFoundException(ChampionshipEventNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    // CHAMPIONSHIP GRAND PRIX EVENT RESULTS
+    @ExceptionHandler(ChampionshipEventResultDuplicatedInRequestException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventResultDuplicatedInRequestException(ChampionshipEventResultDuplicatedInRequestException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(ChampionshipEventResultAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventResultAlreadyExistsException(ChampionshipEventResultAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
     @ExceptionHandler(TeamIsNotActiveException.class)
     public ResponseEntity<?> handleTeamIsNotActiveException(TeamIsNotActiveException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));

@@ -5,6 +5,7 @@ import api.ahm.motogp.entities.ChampionshipEvent;
 import api.ahm.motogp.entities.ChampionshipGrandPrix;
 import api.ahm.motogp.repositories.ChampionshipEventRepository;
 import api.ahm.motogp.repositories.ChampionshipGrandPrixRepository;
+import api.ahm.motogp.services.ChampionshipEventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,16 +15,19 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/championship-events")
+@RequestMapping("/championshipssss/{championshipId}/events")
 public class ChampionshipEventController {
 
     private final ChampionshipEventRepository championshipEventRepository;
     private final ChampionshipGrandPrixRepository championshipGrandPrixRepository;
+    private final ChampionshipEventService championshipEventService;
 
     public ChampionshipEventController(ChampionshipEventRepository championshipEventRepository,
-                                       ChampionshipGrandPrixRepository championshipGrandPrixRepository) {
+                                       ChampionshipGrandPrixRepository championshipGrandPrixRepository,
+                                       ChampionshipEventService championshipEventService) {
         this.championshipEventRepository = championshipEventRepository;
         this.championshipGrandPrixRepository = championshipGrandPrixRepository;
+        this.championshipEventService = championshipEventService;
     }
 
     @GetMapping

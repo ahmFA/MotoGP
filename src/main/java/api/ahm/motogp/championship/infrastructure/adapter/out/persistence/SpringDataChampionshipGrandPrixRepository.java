@@ -38,7 +38,7 @@ public interface SpringDataChampionshipGrandPrixRepository extends JpaRepository
                       where cgp.championship.id = :championshipId and cgp.id = :championshipGrandPrixId
                 """)
     ChampionshipGrandPrixView getChampionshipGrandPrix(int championshipId, int championshipGrandPrixId);
-
+    List<ChampionshipGrandPrixJPAEntity> findByChampionshipId(int championshipId);
     boolean existsChampionshipGrandPrixByChampionshipIdAndId(int championshipId, int id);
     boolean existsChampionshipGrandPrixByChampionshipIdAndGrandPrixId(int championshipId, int grandPrixId);
 }
