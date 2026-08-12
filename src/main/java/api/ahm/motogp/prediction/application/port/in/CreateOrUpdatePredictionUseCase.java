@@ -1,8 +1,9 @@
 package api.ahm.motogp.prediction.application.port.in;
 
-import api.ahm.motogp.prediction.domain.model.Prediction;
+import api.ahm.motogp.prediction.application.port.query.CreateOrUpdatePredictionQuery;
+import api.ahm.motogp.prediction.infrastructure.adapter.in.rest.UserEventPredictionResponse;
 
-public interface CreateOrUpdateUserEventPredictionUseCase {
+public interface CreateOrUpdatePredictionUseCase {
 
-    Prediction createOrUpdateUserEventPrediction(Prediction prediction);
+    UserEventPredictionResponse createOrUpdateUserEventPrediction(CreateOrUpdatePredictionQuery prediction);
 }

@@ -1,7 +1,7 @@
 package api.ahm.motogp.shared.infrastructure.rest;
 
 import api.ahm.motogp.championship.application.exception.*;
-import api.ahm.motogp.exceptions.ErrorResponseDTO;
+import api.ahm.motogp.shared.infrastructure.adapter.in.GlobalErrorResponse;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNameAlreadyExistsException;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNotFoundException;
 import api.ahm.motogp.identity.application.exception.UserEmailAlreadyExistsException;
@@ -9,6 +9,7 @@ import api.ahm.motogp.identity.application.exception.UsernameAlreadyExistsExcept
 import api.ahm.motogp.identity.domain.exception.InvalidEmailException;
 import api.ahm.motogp.identity.domain.exception.InvalidUsernameException;
 import api.ahm.motogp.identity.domain.exception.InvalidUsernameLengthException;
+import api.ahm.motogp.prediction.application.exception.PredictionNotFoundException;
 import api.ahm.motogp.rider.application.exception.RiderIsNotActiveException;
 import api.ahm.motogp.rider.application.exception.RiderNameAlreadyExistsException;
 import api.ahm.motogp.rider.application.exception.RiderNotFoundException;
@@ -40,7 +41,7 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage())
         );
 
-        ErrorResponseDTO erDTO = new ErrorResponseDTO(
+        GlobalErrorResponse erDTO = new GlobalErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 errors
@@ -213,6 +214,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
+    // PREDICTION
+    @ExceptionHandler(PredictionNotFoundException.class)
+    public ResponseEntity<?> handlePredictionNotFoundException(PredictionNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
     // CATEGORIES
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<?> handleCategoryNotFoundException(CategoryNotFoundException ex) {
@@ -231,11 +238,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
     }
 
-    private ErrorResponseDTO bodyResponse(Exception ex, HttpStatus status) {
+    private GlobalErrorResponse bodyResponse(Exception ex, HttpStatus status) {
         Map<String, String> errors = new HashMap<>();
         errors.put("description", ex.getMessage());
 
-        return new ErrorResponseDTO(
+        return new GlobalErrorResponse(
                 LocalDateTime.now(),
                 status.value(),
                 errors
