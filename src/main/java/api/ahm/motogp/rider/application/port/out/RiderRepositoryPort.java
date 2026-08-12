@@ -19,4 +19,5 @@ public interface RiderRepositoryPort {
     Boolean existsAnotherRiderByName(Integer myId,String name);
     Boolean existsAnotherRiderByNumber(Integer myId, Integer number);
     Rider deleteRider(Rider rider);
+    Boolean isActiveRider(int riderId);
 }

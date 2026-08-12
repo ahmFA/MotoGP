@@ -12,4 +12,5 @@ public interface SpringDataRiderRepository extends JpaRepository<RiderJPAEntity,
     Boolean existsRiderByName(String name);
     Boolean existsRiderByIdNotAndName(Integer myId,String name);
     Boolean existsRiderByIdNotAndNumber(Integer myId,Integer number);
+    Boolean existsRiderByIdAndActiveTrue(Integer id);
 }

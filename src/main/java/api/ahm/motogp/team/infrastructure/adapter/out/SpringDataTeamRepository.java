@@ -9,4 +9,5 @@ public interface SpringDataTeamRepository extends JpaRepository<TeamJPAEntity, I
     List<TeamJPAEntity> findByActiveTrue();
     Boolean existsTeamByName(String name);
     Boolean existsTeamByIdNotAndName(Integer id, String name);
+    Boolean existsTeamByIdAndActiveTrue(Integer id);
 }
