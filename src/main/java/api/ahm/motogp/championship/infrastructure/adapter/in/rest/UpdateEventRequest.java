@@ -4,11 +4,8 @@ import api.ahm.motogp.championship.domain.model.valueobjects.EventType;
 
 import java.util.Date;
 
-public record ChampionshipEventResponse(
-        int id,
-        EventType eventType,
+public record UpdateEventRequest(
         Date startDate,
-        String grandPrixName
+        EventType eventType
 ) {
-
 }

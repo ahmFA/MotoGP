@@ -18,7 +18,7 @@ public class UserJPAEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Column(name = "username")
     private String username;
     @Column(name = "email")
@@ -32,11 +32,11 @@ public class UserJPAEntity {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

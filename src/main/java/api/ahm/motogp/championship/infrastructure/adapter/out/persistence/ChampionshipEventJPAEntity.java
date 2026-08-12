@@ -33,10 +33,20 @@ public class ChampionshipEventJPAEntity {
     @Column(name="start_date")
     private Date startDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="status")
+    private EventStatus eventStatus;
+
     public enum EventType {
         QUALIFYING,
         SPRINT,
         MAIN_RACE
+    }
+
+    public enum EventStatus {
+        CLOSED,
+        OPEN,
+        FINISHED
     }
 
     public ChampionshipEventJPAEntity() {
@@ -79,5 +89,13 @@ public class ChampionshipEventJPAEntity {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public EventStatus getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(EventStatus eventStatus) {
+        this.eventStatus = eventStatus;
     }
 }

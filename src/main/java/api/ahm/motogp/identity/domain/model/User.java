@@ -4,7 +4,7 @@ import api.ahm.motogp.identity.domain.model.valueobjects.Email;
 import api.ahm.motogp.identity.domain.model.valueobjects.Username;
 
 public class User {
-    private int id;
+    private final Long id;
     private Username username;
     private Email email;
     private String password;
@@ -15,7 +15,7 @@ public class User {
         USER
     }
 
-    private User(int id, Username username, Email email, String password, Role role) {
+    private User(Long id, Username username, Email email, String password, Role role) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -25,7 +25,7 @@ public class User {
 
     public static User create(String username, String email, String password, String role) {
         return new User(
-                0,
+                0L,
                 new Username(username),
                 new Email(email),
                 password,
@@ -33,7 +33,7 @@ public class User {
         );
     }
 
-    public static User fromPersistence(int id, String username, String email, String password, String role) {
+    public static User fromPersistence(Long id, String username, String email, String password, String role) {
         return new User(
                 id,
                 new Username(username),
@@ -50,7 +50,7 @@ public class User {
         return Role.valueOf(role.trim().toUpperCase());
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

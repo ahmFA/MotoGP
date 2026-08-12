@@ -42,7 +42,7 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
     @Override
     public User createUser(User user) {
         UserJPAEntity entity = new UserJPAEntity();
-        entity.setId(0);
+        entity.setId(0L);
         entity.setUsername(user.getUsername().username());
         entity.setEmail(user.getEmail().email());
         entity.setPassword(user.getPassword());

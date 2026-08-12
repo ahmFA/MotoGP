@@ -4,11 +4,13 @@ import api.ahm.motogp.championship.application.port.in.command.CreateChampionshi
 import api.ahm.motogp.championship.application.port.out.ChampionshipGrandPrixQueryPort;
 import api.ahm.motogp.championship.application.port.out.ChampionshipGrandPrixRepositoryPort;
 import api.ahm.motogp.championship.application.port.query.ChampionshipGrandPrixView;
+import api.ahm.motogp.championship.domain.model.ChampionshipGrandPrix;
 import api.ahm.motogp.grandprix.infrastructure.adapter.out.persistence.GrandPrixJPAEntity;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ChampionshipGrandPrixPersistenceAdapter implements ChampionshipGrandPrixQueryPort, ChampionshipGrandPrixRepositoryPort {
@@ -30,6 +32,12 @@ public class ChampionshipGrandPrixPersistenceAdapter implements ChampionshipGran
     @Override
     public ChampionshipGrandPrixView getChampionshipGrandPrixResponse(int championshipId, int championshipGrandPrixId) {
         return springDataChampionshipGrandPrixRepository.getChampionshipGrandPrix(championshipId, championshipGrandPrixId);
+    }
+
+    @Override
+    public ChampionshipGrandPrix getChampionshipGrandPrixById(int championshipId){
+        Optional<ChampionshipGrandPrixJPAEntity> gp = springDataChampionshipGrandPrixRepository.findById(championshipId);
+        return gp.map(this::toDomain).orElse(null);
     }
 
     @Override
@@ -66,5 +74,15 @@ public class ChampionshipGrandPrixPersistenceAdapter implements ChampionshipGran
     @Override
     public void deleteChampionshipGrandPrixById(int championshipGrandPrixId) {
         springDataChampionshipGrandPrixRepository.deleteById(championshipGrandPrixId);
+    }
+
+    private ChampionshipGrandPrix toDomain(ChampionshipGrandPrixJPAEntity entity){
+        return new ChampionshipGrandPrix(
+                entity.getId(),
+                entity.getGrandPrix().getId(),
+                entity.getChampionship().getId(),
+                entity.getDate(),
+                entity.getRoundNumber()
+        );
     }
 }

@@ -1,5 +1,7 @@
 package api.ahm.motogp.championship.infrastructure.adapter.in.rest;
 
+import api.ahm.motogp.championship.domain.model.valueobjects.EventStatus;
+import api.ahm.motogp.championship.domain.model.valueobjects.EventType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
@@ -11,11 +13,6 @@ public record CreateChampionshipEventBulkRequest(
         @Size(max = 100)
         List<@Valid EventEntry> events
 ) {
-    public enum EventType {
-        QUALIFYING,
-        SPRINT,
-        MAIN_RACE
-    }
 
     public record EventEntry(
             @NotNull
@@ -24,6 +21,7 @@ public record CreateChampionshipEventBulkRequest(
             @NotNull
             EventType eventType,
             @NotNull
-            Date startDate
+            Date startDate,
+            EventStatus eventStatus
     ){}
 }

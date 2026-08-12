@@ -8,6 +8,7 @@ import api.ahm.motogp.championship.application.port.in.command.CreateChampionshi
 import api.ahm.motogp.championship.application.port.in.command.EventCommand;
 import api.ahm.motogp.championship.application.port.out.ChampionshipEventRepositoryPort;
 import api.ahm.motogp.championship.application.port.out.ChampionshipGrandPrixRepositoryPort;
+import api.ahm.motogp.championship.domain.model.valueobjects.EventType;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +73,6 @@ public class CreateChampionshipEventService implements CreateChampionshipEventUs
         }
     }
 
-    private record EventKey(int championshipGrandPrixId, EventCommand.EventType eventType) {
+    private record EventKey(int championshipGrandPrixId, EventType eventType) {
     }
 }

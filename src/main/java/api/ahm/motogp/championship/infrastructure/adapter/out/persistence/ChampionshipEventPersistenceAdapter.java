@@ -2,7 +2,10 @@ package api.ahm.motogp.championship.infrastructure.adapter.out.persistence;
 
 import api.ahm.motogp.championship.application.port.in.command.EventCommand;
 import api.ahm.motogp.championship.application.port.out.ChampionshipEventRepositoryPort;
-import api.ahm.motogp.championship.application.port.query.ChampionshipGranPrixEventView;
+import api.ahm.motogp.championship.application.port.query.ChampionshipEventView;
+import api.ahm.motogp.championship.domain.model.ChampionshipEvent;
+import api.ahm.motogp.championship.domain.model.valueobjects.EventStatus;
+import api.ahm.motogp.championship.domain.model.valueobjects.EventType;
 import api.ahm.motogp.grandprix.infrastructure.adapter.out.persistence.GrandPrixJPAEntity;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
@@ -31,14 +34,14 @@ public class ChampionshipEventPersistenceAdapter implements ChampionshipEventRep
     }
 
     @Override
-    public List<ChampionshipGranPrixEventView> getEventsByChampionship(int championshipId) {
+    public List<ChampionshipEventView> getEventsByChampionship(int championshipId) {
         List<ChampionshipGrandPrixJPAEntity> championshipGPs = springDataChampionshipGrandPrixRepository.findByChampionshipId(championshipId);
         List<Integer> ids = new ArrayList<>();
         for(ChampionshipGrandPrixJPAEntity gp : championshipGPs){
             ids.add(gp.getId());
         }
         List<ChampionshipEventJPAEntity> events = springDataChampionshipEventRepository.findByChampionshipGrandPrixIdIn(ids);
-        List<ChampionshipGranPrixEventView> eventViews = new ArrayList<>();
+        List<ChampionshipEventView> eventViews = new ArrayList<>();
         for(ChampionshipEventJPAEntity event : events){
             GrandPrixJPAEntity gp = em.find(GrandPrixJPAEntity.class, event.getChampionshipGrandPrix().getId());
             eventViews.add(toView(event, gp.getName()));
@@ -53,7 +56,7 @@ public class ChampionshipEventPersistenceAdapter implements ChampionshipEventRep
 
     @Override
     public boolean existsChampionshipGrandPrixEventByChampionshipGrandPrixIdAndEventType(int championshipGrandPrixId,
-                                                                                        EventCommand.EventType eventType) {
+                                                                                        EventType eventType) {
         return springDataChampionshipEventRepository.existsChampionshipGrandPrixEventByChampionshipGrandPrixIdAndEventType(
                 championshipGrandPrixId,
                 toEntityEventType(eventType)
@@ -68,6 +71,12 @@ public class ChampionshipEventPersistenceAdapter implements ChampionshipEventRep
         springDataChampionshipEventRepository.saveAll(entities);
     }
 
+    @Override
+    public void updateEventStatus(EventCommand eventCommand) {
+        ChampionshipEventJPAEntity championshipEvent = toEntity(eventCommand);
+        springDataChampionshipEventRepository.save(championshipEvent);
+    }
+
     private ChampionshipEventJPAEntity toEntity(EventCommand eventCommand) {
         ChampionshipEventJPAEntity entity = new ChampionshipEventJPAEntity();
         entity.setId(0);
@@ -77,31 +86,33 @@ public class ChampionshipEventPersistenceAdapter implements ChampionshipEventRep
         return entity;
     }
 
-    private ChampionshipEventJPAEntity.EventType toEntityEventType(EventCommand.EventType eventType) {
+    private ChampionshipEventJPAEntity.EventType toEntityEventType(EventType eventType) {
         return ChampionshipEventJPAEntity.EventType.valueOf(eventType.name());
     }
 
-    private EventCommand.EventType toCommandEventType(ChampionshipEventJPAEntity.EventType eventType) {
-        return EventCommand.EventType.valueOf(eventType.name());
+
+    private EventType toEventTypeDomain(ChampionshipEventJPAEntity.EventType eventType) {
+        return EventType.valueOf(eventType.name());
     }
 
-    private ChampionshipGranPrixEventView.EventType toViewEventType(ChampionshipEventJPAEntity.EventType eventType) {
-        return ChampionshipGranPrixEventView.EventType.valueOf(eventType.name());
+    private EventStatus toEventStatusDomain(ChampionshipEventJPAEntity.EventStatus eventStatus) {
+        return EventStatus.valueOf(eventStatus.name());
     }
 
     private EventCommand toCommand(ChampionshipEventJPAEntity entity) {
         return new EventCommand(
                 entity.getId(),
                 entity.getChampionshipGrandPrix().getId(),
-                toCommandEventType(entity.getEventType()),
-                entity.getStartDate()
+                toEventTypeDomain(entity.getEventType()),
+                entity.getStartDate(),
+                toEventStatusDomain(entity.getEventStatus())
         );
     }
 
-    private ChampionshipGranPrixEventView toView(ChampionshipEventJPAEntity entity, String grandPrixName) {
-        return new ChampionshipGranPrixEventView(
+    private ChampionshipEventView toView(ChampionshipEventJPAEntity entity, String grandPrixName) {
+        return new ChampionshipEventView(
                 entity.getId(),
-                toViewEventType(entity.getEventType()),
+                toEventTypeDomain(entity.getEventType()),
                 entity.getStartDate(),
                 entity.getChampionshipGrandPrix().getId(),
                 grandPrixName

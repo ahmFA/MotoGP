@@ -19,7 +19,7 @@ final class UserMapper {
 
     static UserResponse toResponse(User user) {
         return new UserResponse(
-                user.getId(),
+                Math.toIntExact(user.getId()),
                 user.getUsername().username(),
                 user.getEmail().email(),
                 user.getRole().name()
