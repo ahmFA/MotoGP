@@ -182,7 +182,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
-    // CHAMPIONSHIP GRAND PRIX EVENTS
+    // EVENTS
     @ExceptionHandler(ChampionshipEventDuplicatedInRequestException.class)
     public ResponseEntity<?> handleChampionshipGrandPrixEventDuplicatedInRequestException(ChampionshipEventDuplicatedInRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
@@ -198,7 +198,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
     }
 
-    // CHAMPIONSHIP GRAND PRIX EVENT RESULTS
+    @ExceptionHandler(EventCannotBePredictedException.class)
+    public ResponseEntity<?> handleEventCannotBePredictedException(EventCannotBePredictedException ex) {
+        return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(bodyResponse(ex, HttpStatus.PRECONDITION_FAILED));
+    }
+
+    // EVENT RESULTS
     @ExceptionHandler(ChampionshipEventResultDuplicatedInRequestException.class)
     public ResponseEntity<?> handleChampionshipGrandPrixEventResultDuplicatedInRequestException(ChampionshipEventResultDuplicatedInRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));

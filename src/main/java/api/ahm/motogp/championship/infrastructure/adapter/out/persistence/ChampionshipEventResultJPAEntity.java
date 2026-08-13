@@ -11,12 +11,12 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "championship_event_result",
+@Table(name = "event_result",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "uk_championshipeventresult_cei_cri",
+                        name = "uk_eventresult_ei_cri",
                         columnNames = {
-                                "championship_event_id",
+                                "event_id",
                                 "championship_rider_id"
                         }
                 )

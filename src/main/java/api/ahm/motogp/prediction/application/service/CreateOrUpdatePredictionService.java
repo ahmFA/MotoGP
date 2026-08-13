@@ -2,10 +2,13 @@ package api.ahm.motogp.prediction.application.service;
 
 import api.ahm.motogp.championship.application.exception.ChampionshipEventNotFoundException;
 import api.ahm.motogp.championship.application.exception.ChampionshipRiderNotFoundException;
+import api.ahm.motogp.championship.application.exception.EventCannotBePredictedException;
 import api.ahm.motogp.championship.application.port.in.command.EventCommand;
 import api.ahm.motogp.championship.application.port.out.ChampionshipEventRepositoryPort;
 import api.ahm.motogp.championship.application.port.out.ChampionshipRiderRepositoryPort;
+import api.ahm.motogp.championship.domain.model.ChampionshipEvent;
 import api.ahm.motogp.championship.domain.model.valueobjects.EventId;
+import api.ahm.motogp.championship.domain.model.valueobjects.EventStatus;
 import api.ahm.motogp.grandprix.application.port.out.GrandPrixRepositoryPort;
 import api.ahm.motogp.prediction.application.port.in.CreateOrUpdatePredictionUseCase;
 import api.ahm.motogp.prediction.application.port.out.CreateOrUpdatePredictionRepositoryPort;
@@ -49,6 +52,10 @@ public class CreateOrUpdatePredictionService implements CreateOrUpdatePrediction
         }
         if(!riderRepositoryPort.existsChampionshipRiderById(Math.toIntExact(prediction.getThirdRider().id()))){
             throw new ChampionshipRiderNotFoundException(Math.toIntExact(prediction.getThirdRider().id()));
+        }
+        ChampionshipEvent event = championshipEventRepositoryPort.getEventById(Math.toIntExact(prediction.getEventId().id()));
+        if(!event.canBePredicted()){
+            throw new EventCannotBePredictedException(event.getId());
         }
         Prediction newPrediction = createOrUpdatePredictionRepositoryPort.createPrediction(prediction);
         return toResponse(newPrediction);

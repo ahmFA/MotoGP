@@ -96,4 +96,8 @@ public class ChampionshipEvent {
         }
         this.setStartDate(startDate);
     }
+
+    public boolean canBePredicted(){
+       return this.getEventStatus() == EventStatus.OPEN;
+    }
 }

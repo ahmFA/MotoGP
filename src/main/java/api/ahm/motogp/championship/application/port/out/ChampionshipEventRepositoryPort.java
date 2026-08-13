@@ -13,6 +13,7 @@ public interface ChampionshipEventRepositoryPort {
                                                                                   EventType eventType);
     void createChampionshipGrandPrixEvents(List<EventCommand> events);
     EventCommand getEventByEventId(int eventId);
+    ChampionshipEvent getEventById(int eventId);
     List<ChampionshipEventView> getEventsByChampionship(int championshipId);
     void updateEventStatus(EventCommand eventCommand);
 }

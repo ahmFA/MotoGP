@@ -1,5 +1,6 @@
 package api.ahm.motogp.championship.infrastructure.adapter.out.persistence;
 
+import api.ahm.motogp.championship.application.exception.ChampionshipEventNotFoundException;
 import api.ahm.motogp.championship.application.port.in.command.EventCommand;
 import api.ahm.motogp.championship.application.port.out.ChampionshipEventRepositoryPort;
 import api.ahm.motogp.championship.application.port.query.ChampionshipEventView;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ChampionshipEventPersistenceAdapter implements ChampionshipEventRepositoryPort {
@@ -31,6 +33,15 @@ public class ChampionshipEventPersistenceAdapter implements ChampionshipEventRep
     @Override
     public EventCommand getEventByEventId(int eventId) {
         return springDataChampionshipEventRepository.findById(eventId).stream().map(this::toCommand).findFirst().orElse(null);
+    }
+
+    @Override
+    public ChampionshipEvent getEventById(int eventId) {
+        Optional<ChampionshipEventJPAEntity> eventJPA = springDataChampionshipEventRepository.findById(eventId);
+        if(eventJPA.isEmpty()){
+            throw new ChampionshipEventNotFoundException(eventId);
+        }
+        return toDomain(eventJPA.get());
     }
 
     @Override
@@ -101,6 +112,16 @@ public class ChampionshipEventPersistenceAdapter implements ChampionshipEventRep
 
     private EventCommand toCommand(ChampionshipEventJPAEntity entity) {
         return new EventCommand(
+                entity.getId(),
+                entity.getChampionshipGrandPrix().getId(),
+                toEventTypeDomain(entity.getEventType()),
+                entity.getStartDate(),
+                toEventStatusDomain(entity.getEventStatus())
+        );
+    }
+
+    private ChampionshipEvent toDomain(ChampionshipEventJPAEntity entity) {
+        return new ChampionshipEvent(
                 entity.getId(),
                 entity.getChampionshipGrandPrix().getId(),
                 toEventTypeDomain(entity.getEventType()),

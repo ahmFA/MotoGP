@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="championship_event",
+@Table(name="event",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "uk_championshipevent_cgp_eventtype",
+                        name = "uk_event_cgp_eventtype",
                         columnNames = {
                                 "championship_grandprix_id",
                                 "event_type"
