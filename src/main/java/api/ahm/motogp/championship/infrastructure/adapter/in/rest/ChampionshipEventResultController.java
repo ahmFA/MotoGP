@@ -1,6 +1,6 @@
 package api.ahm.motogp.championship.infrastructure.adapter.in.rest;
 
-import api.ahm.motogp.championship.application.port.in.CreateChampionshipEventResultUseCase;
+import api.ahm.motogp.championship.application.port.in.CreateEventResultUseCase;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("events/{eventId}/results")
 public class ChampionshipEventResultController {
 
-    private final CreateChampionshipEventResultUseCase createChampionshipGrandPrixEventResultUseCase;
+    private final CreateEventResultUseCase createChampionshipGrandPrixEventResultUseCase;
 
-    public ChampionshipEventResultController(CreateChampionshipEventResultUseCase createChampionshipGrandPrixEventResultUseCase) {
+    public ChampionshipEventResultController(CreateEventResultUseCase createChampionshipGrandPrixEventResultUseCase) {
         this.createChampionshipGrandPrixEventResultUseCase = createChampionshipGrandPrixEventResultUseCase;
     }
 

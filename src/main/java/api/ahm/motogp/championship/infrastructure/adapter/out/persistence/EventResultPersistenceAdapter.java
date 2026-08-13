@@ -1,21 +1,21 @@
 package api.ahm.motogp.championship.infrastructure.adapter.out.persistence;
 
-import api.ahm.motogp.championship.application.port.in.command.CreateChampionshipEventResultCommand;
+import api.ahm.motogp.championship.application.port.in.command.CreateEventResultCommand;
 import api.ahm.motogp.championship.application.port.in.command.EventResultCommand;
-import api.ahm.motogp.championship.application.port.out.ChampionshipEventResultRepositoryPort;
+import api.ahm.motogp.championship.application.port.out.EventResultRepositoryPort;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class ChampionshipEventResultPersistenceAdapter implements ChampionshipEventResultRepositoryPort {
+public class EventResultPersistenceAdapter implements EventResultRepositoryPort {
 
-    private final SpringDataChampionshipEventResultRepository springDataChampionshipGrandPrixEventResultRepository;
+    private final SpringDataEventResultRepository springDataChampionshipGrandPrixEventResultRepository;
     private final EntityManager em;
 
-    public ChampionshipEventResultPersistenceAdapter(SpringDataChampionshipEventResultRepository springDataChampionshipGrandPrixEventResultRepository,
-                                                     EntityManager em) {
+    public EventResultPersistenceAdapter(SpringDataEventResultRepository springDataChampionshipGrandPrixEventResultRepository,
+                                         EntityManager em) {
         this.springDataChampionshipGrandPrixEventResultRepository = springDataChampionshipGrandPrixEventResultRepository;
         this.em = em;
     }
@@ -30,18 +30,18 @@ public class ChampionshipEventResultPersistenceAdapter implements ChampionshipEv
     }
 
     @Override
-    public void createChampionshipGrandPrixEventResults(CreateChampionshipEventResultCommand resultsCommand) {
-        List<ChampionshipEventResultJPAEntity> entities = resultsCommand.results()
+    public void createChampionshipGrandPrixEventResults(CreateEventResultCommand resultsCommand) {
+        List<EventResultJPAEntity> entities = resultsCommand.results()
                 .stream()
                 .map(result -> toEntity(resultsCommand.championshipEventId(), result))
                 .toList();
         springDataChampionshipGrandPrixEventResultRepository.saveAll(entities);
     }
 
-    private ChampionshipEventResultJPAEntity toEntity(int championshipEventId, EventResultCommand resultCommand) {
-        ChampionshipEventResultJPAEntity entity = new ChampionshipEventResultJPAEntity();
+    private EventResultJPAEntity toEntity(int championshipEventId, EventResultCommand resultCommand) {
+        EventResultJPAEntity entity = new EventResultJPAEntity();
         entity.setId(0);
-        entity.setChampionshipEvent(em.getReference(ChampionshipEventJPAEntity.class, championshipEventId));
+        entity.setChampionshipEvent(em.getReference(EventJPAEntity.class, championshipEventId));
         entity.setChampionshipRider(em.getReference(ChampionshipRiderJPAEntity.class, resultCommand.championshipRiderId()));
         entity.setPosition(resultCommand.position());
         entity.setPoints(resultCommand.points());

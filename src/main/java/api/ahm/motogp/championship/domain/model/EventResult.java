@@ -1,6 +1,6 @@
 package api.ahm.motogp.championship.domain.model;
 
-public record ChampionshipEventResult(
+public record EventResult(
         int id,
         int championshipEventId,
         int championshipRiderId,

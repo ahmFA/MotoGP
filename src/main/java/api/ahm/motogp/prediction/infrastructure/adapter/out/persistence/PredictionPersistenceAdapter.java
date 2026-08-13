@@ -2,7 +2,7 @@ package api.ahm.motogp.prediction.infrastructure.adapter.out.persistence;
 
 import api.ahm.motogp.championship.domain.model.valueobjects.EventId;
 import api.ahm.motogp.championship.domain.model.valueobjects.RiderId;
-import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.ChampionshipEventJPAEntity;
+import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.EventJPAEntity;
 import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.ChampionshipRiderJPAEntity;
 import api.ahm.motogp.identity.domain.model.valueobjects.UserId;
 import api.ahm.motogp.identity.infrastructure.adapter.out.persistence.UserJPAEntity;
@@ -86,7 +86,7 @@ public class PredictionPersistenceAdapter implements CreateOrUpdatePredictionRep
 
     private PredictionJPAEntity toEntity(Prediction prediction){
         UserJPAEntity userJPAEntity = entityManager.find(UserJPAEntity.class, prediction.getUserId().id());
-        ChampionshipEventJPAEntity eventJPAEntity = entityManager.find(ChampionshipEventJPAEntity.class, prediction.getEventId().id());
+        EventJPAEntity eventJPAEntity = entityManager.find(EventJPAEntity.class, prediction.getEventId().id());
         ChampionshipRiderJPAEntity firstRider = entityManager.find(ChampionshipRiderJPAEntity.class, prediction.getFirstRider().id());
         ChampionshipRiderJPAEntity secondRider = entityManager.find(ChampionshipRiderJPAEntity.class, prediction.getSecondRider().id());
         ChampionshipRiderJPAEntity thirdRider = entityManager.find(ChampionshipRiderJPAEntity.class, prediction.getThirdRider().id());

@@ -17,7 +17,7 @@ import java.util.Date;
         }
 )
 
-public class ChampionshipEventJPAEntity {
+public class EventJPAEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
@@ -49,10 +49,10 @@ public class ChampionshipEventJPAEntity {
         FINISHED
     }
 
-    public ChampionshipEventJPAEntity() {
+    public EventJPAEntity() {
     }
 
-    public ChampionshipEventJPAEntity(int id, ChampionshipGrandPrixJPAEntity championshipGrandPrix, EventType eventType, Date startDate) {
+    public EventJPAEntity(int id, ChampionshipGrandPrixJPAEntity championshipGrandPrix, EventType eventType, Date startDate) {
         this.id = id;
         this.championshipGrandPrix = championshipGrandPrix;
         this.eventType = eventType;

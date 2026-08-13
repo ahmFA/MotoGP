@@ -22,7 +22,7 @@ import jakarta.persistence.UniqueConstraint;
                 )
         }
 )
-public class ChampionshipEventResultJPAEntity {
+public class EventResultJPAEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class ChampionshipEventResultJPAEntity {
 
     @ManyToOne
     @JoinColumn(name = "championship_event_id")
-    private ChampionshipEventJPAEntity championshipEvent;
+    private EventJPAEntity championshipEvent;
 
     @ManyToOne
     @JoinColumn(name = "championship_rider_id")
@@ -42,7 +42,7 @@ public class ChampionshipEventResultJPAEntity {
     @Column(name = "points")
     private float points;
 
-    public ChampionshipEventResultJPAEntity() {
+    public EventResultJPAEntity() {
     }
 
     public int getId() {
@@ -53,11 +53,11 @@ public class ChampionshipEventResultJPAEntity {
         this.id = id;
     }
 
-    public ChampionshipEventJPAEntity getChampionshipEvent() {
+    public EventJPAEntity getChampionshipEvent() {
         return championshipEvent;
     }
 
-    public void setChampionshipEvent(ChampionshipEventJPAEntity championshipEvent) {
+    public void setChampionshipEvent(EventJPAEntity championshipEvent) {
         this.championshipEvent = championshipEvent;
     }
 

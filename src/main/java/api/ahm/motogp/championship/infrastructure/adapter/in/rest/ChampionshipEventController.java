@@ -1,8 +1,7 @@
 package api.ahm.motogp.championship.infrastructure.adapter.in.rest;
 
-import api.ahm.motogp.championship.application.port.in.CreateChampionshipEventUseCase;
-import api.ahm.motogp.championship.application.port.in.ListChampionshipEventUseCase;
-import api.ahm.motogp.championship.application.port.in.command.EventCommand;
+import api.ahm.motogp.championship.application.port.in.CreateEventUseCase;
+import api.ahm.motogp.championship.application.port.in.ListEventUseCase;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +12,18 @@ import java.util.List;
 @RequestMapping("championships/{championshipId}/events")
 public class ChampionshipEventController {
 
-    private final CreateChampionshipEventUseCase createChampionshipGrandPrixEventUseCase;
-    private final ListChampionshipEventUseCase listChampionshipEventUseCase;
+    private final CreateEventUseCase createChampionshipGrandPrixEventUseCase;
+    private final ListEventUseCase listEventUseCase;
 
-    public ChampionshipEventController(CreateChampionshipEventUseCase createChampionshipGrandPrixEventUseCase,
-                                       ListChampionshipEventUseCase listChampionshipEventUseCase) {
+    public ChampionshipEventController(CreateEventUseCase createChampionshipGrandPrixEventUseCase,
+                                       ListEventUseCase listEventUseCase) {
         this.createChampionshipGrandPrixEventUseCase = createChampionshipGrandPrixEventUseCase;
-        this.listChampionshipEventUseCase = listChampionshipEventUseCase;
+        this.listEventUseCase = listEventUseCase;
     }
 
     @GetMapping
     public ResponseEntity<List<ChampionshipEventResponse>> getEventsByChampionship(@PathVariable int championshipId) {
-        List<ChampionshipEventResponse> eventResponse = listChampionshipEventUseCase.getEventsByChampionship(championshipId)
+        List<ChampionshipEventResponse> eventResponse = listEventUseCase.getEventsByChampionship(championshipId)
                                                             .stream().map(ChampionshipEventMapper::toResponse).toList();
         return ResponseEntity.ok(eventResponse);
     }

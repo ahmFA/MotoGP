@@ -2,7 +2,7 @@ package api.ahm.motogp.championship.application.port.in.command;
 
 import java.util.List;
 
-public record CreateChampionshipEventCommand(
+public record CreateEventCommand(
         int championshipId,
         List<EventCommand> events
 ) {

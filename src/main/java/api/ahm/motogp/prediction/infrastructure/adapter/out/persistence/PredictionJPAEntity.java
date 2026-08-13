@@ -1,6 +1,6 @@
 package api.ahm.motogp.prediction.infrastructure.adapter.out.persistence;
 
-import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.ChampionshipEventJPAEntity;
+import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.EventJPAEntity;
 import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.ChampionshipRiderJPAEntity;
 import api.ahm.motogp.identity.infrastructure.adapter.out.persistence.UserJPAEntity;
 import jakarta.persistence.*;
@@ -25,7 +25,7 @@ public class PredictionJPAEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="event_id")
-    private ChampionshipEventJPAEntity event;
+    private EventJPAEntity event;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="first")
@@ -55,11 +55,11 @@ public class PredictionJPAEntity {
         this.user = user;
     }
 
-    public ChampionshipEventJPAEntity getEvent() {
+    public EventJPAEntity getEvent() {
         return event;
     }
 
-    public void setEvent(ChampionshipEventJPAEntity event) {
+    public void setEvent(EventJPAEntity event) {
         this.event = event;
     }
 

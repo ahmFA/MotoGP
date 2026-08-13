@@ -4,7 +4,7 @@ import api.ahm.motogp.championship.domain.model.valueobjects.EventType;
 
 import java.util.Date;
 
-public record ChampionshipEventView(
+public record EventView(
         int id,
         EventType eventType,
         Date startDate,

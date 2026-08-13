@@ -1,9 +1,9 @@
 package api.ahm.motogp.championship.application.port.out;
 
-import api.ahm.motogp.championship.application.port.in.command.CreateChampionshipEventResultCommand;
+import api.ahm.motogp.championship.application.port.in.command.CreateEventResultCommand;
 
-public interface ChampionshipEventResultRepositoryPort {
+public interface EventResultRepositoryPort {
     boolean existsChampionshipGrandPrixEventResultByChampionshipEventIdAndChampionshipRiderId(int championshipEventId,
                                                                                               int championshipRiderId);
-    void createChampionshipGrandPrixEventResults(CreateChampionshipEventResultCommand resultsCommand);
+    void createChampionshipGrandPrixEventResults(CreateEventResultCommand resultsCommand);
 }

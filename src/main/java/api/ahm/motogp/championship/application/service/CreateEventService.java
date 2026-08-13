@@ -1,12 +1,12 @@
 package api.ahm.motogp.championship.application.service;
 
-import api.ahm.motogp.championship.application.exception.ChampionshipEventAlreadyExistsException;
-import api.ahm.motogp.championship.application.exception.ChampionshipEventDuplicatedInRequestException;
+import api.ahm.motogp.championship.application.exception.EventAlreadyExistsException;
+import api.ahm.motogp.championship.application.exception.EventDuplicatedInRequestException;
 import api.ahm.motogp.championship.application.exception.ChampionshipGrandPrixNotFoundException;
-import api.ahm.motogp.championship.application.port.in.CreateChampionshipEventUseCase;
-import api.ahm.motogp.championship.application.port.in.command.CreateChampionshipEventCommand;
+import api.ahm.motogp.championship.application.port.in.CreateEventUseCase;
+import api.ahm.motogp.championship.application.port.in.command.CreateEventCommand;
 import api.ahm.motogp.championship.application.port.in.command.EventCommand;
-import api.ahm.motogp.championship.application.port.out.ChampionshipEventRepositoryPort;
+import api.ahm.motogp.championship.application.port.out.EventRepositoryPort;
 import api.ahm.motogp.championship.application.port.out.ChampionshipGrandPrixRepositoryPort;
 import api.ahm.motogp.championship.domain.model.valueobjects.EventType;
 import jakarta.transaction.Transactional;
@@ -16,20 +16,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class CreateChampionshipEventService implements CreateChampionshipEventUseCase {
+public class CreateEventService implements CreateEventUseCase {
 
-    private final ChampionshipEventRepositoryPort championshipGrandPrixEventRepositoryPort;
+    private final EventRepositoryPort championshipGrandPrixEventRepositoryPort;
     private final ChampionshipGrandPrixRepositoryPort championshipGrandPrixRepositoryPort;
 
-    public CreateChampionshipEventService(ChampionshipEventRepositoryPort championshipGrandPrixEventRepositoryPort,
-                                          ChampionshipGrandPrixRepositoryPort championshipGrandPrixRepositoryPort) {
+    public CreateEventService(EventRepositoryPort championshipGrandPrixEventRepositoryPort,
+                              ChampionshipGrandPrixRepositoryPort championshipGrandPrixRepositoryPort) {
         this.championshipGrandPrixEventRepositoryPort = championshipGrandPrixEventRepositoryPort;
         this.championshipGrandPrixRepositoryPort = championshipGrandPrixRepositoryPort;
     }
 
     @Override
     @Transactional
-    public void createEvents(CreateChampionshipEventCommand eventsCommand) {
+    public void createEvents(CreateEventCommand eventsCommand) {
         validateNoDuplicatedEventsInRequest(eventsCommand);
         validateChampionshipGrandPrixesExist(eventsCommand);
         validateEventsDoNotExist(eventsCommand);
@@ -37,12 +37,12 @@ public class CreateChampionshipEventService implements CreateChampionshipEventUs
         championshipGrandPrixEventRepositoryPort.createChampionshipGrandPrixEvents(eventsCommand.events());
     }
 
-    private void validateNoDuplicatedEventsInRequest(CreateChampionshipEventCommand eventsCommand) {
+    private void validateNoDuplicatedEventsInRequest(CreateEventCommand eventsCommand) {
         Set<EventKey> eventKeys = new HashSet<>();
         for (EventCommand event : eventsCommand.events()) {
             EventKey eventKey = new EventKey(event.championshipGrandPrixId(), event.eventType());
             if (!eventKeys.add(eventKey)) {
-                throw new ChampionshipEventDuplicatedInRequestException(
+                throw new EventDuplicatedInRequestException(
                         event.championshipGrandPrixId(),
                         event.eventType().name()
                 );
@@ -50,7 +50,7 @@ public class CreateChampionshipEventService implements CreateChampionshipEventUs
         }
     }
 
-    private void validateChampionshipGrandPrixesExist(CreateChampionshipEventCommand eventsCommand) {
+    private void validateChampionshipGrandPrixesExist(CreateEventCommand eventsCommand) {
         for (EventCommand event : eventsCommand.events()) {
             if (!championshipGrandPrixRepositoryPort.existsChampionshipGrandPrixByChampionshipIdAndId(
                     eventsCommand.championshipId(),
@@ -60,12 +60,12 @@ public class CreateChampionshipEventService implements CreateChampionshipEventUs
         }
     }
 
-    private void validateEventsDoNotExist(CreateChampionshipEventCommand eventsCommand) {
+    private void validateEventsDoNotExist(CreateEventCommand eventsCommand) {
         for (EventCommand event : eventsCommand.events()) {
             if (championshipGrandPrixEventRepositoryPort.existsChampionshipGrandPrixEventByChampionshipGrandPrixIdAndEventType(
                     event.championshipGrandPrixId(),
                     event.eventType())) {
-                throw new ChampionshipEventAlreadyExistsException(
+                throw new EventAlreadyExistsException(
                         event.championshipGrandPrixId(),
                         event.eventType().name()
                 );

@@ -183,18 +183,18 @@ public class GlobalExceptionHandler {
     }
 
     // EVENTS
-    @ExceptionHandler(ChampionshipEventDuplicatedInRequestException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventDuplicatedInRequestException(ChampionshipEventDuplicatedInRequestException ex) {
+    @ExceptionHandler(EventDuplicatedInRequestException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventDuplicatedInRequestException(EventDuplicatedInRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
-    @ExceptionHandler(ChampionshipEventAlreadyExistsException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventAlreadyExistsException(ChampionshipEventAlreadyExistsException ex) {
+    @ExceptionHandler(EventAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventAlreadyExistsException(EventAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
-    @ExceptionHandler(ChampionshipEventNotFoundException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventNotFoundException(ChampionshipEventNotFoundException ex) {
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventNotFoundException(EventNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
     }
 
@@ -204,13 +204,13 @@ public class GlobalExceptionHandler {
     }
 
     // EVENT RESULTS
-    @ExceptionHandler(ChampionshipEventResultDuplicatedInRequestException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventResultDuplicatedInRequestException(ChampionshipEventResultDuplicatedInRequestException ex) {
+    @ExceptionHandler(EventResultDuplicatedInRequestException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventResultDuplicatedInRequestException(EventResultDuplicatedInRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
-    @ExceptionHandler(ChampionshipEventResultAlreadyExistsException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventResultAlreadyExistsException(ChampionshipEventResultAlreadyExistsException ex) {
+    @ExceptionHandler(EventResultAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventResultAlreadyExistsException(EventResultAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 

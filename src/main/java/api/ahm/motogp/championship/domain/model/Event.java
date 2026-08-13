@@ -5,7 +5,7 @@ import api.ahm.motogp.championship.domain.model.valueobjects.EventType;
 
 import java.util.Date;
 
-public class ChampionshipEvent {
+public class Event {
 
     private int id;
     private int championshipGrandPrixId;
@@ -13,7 +13,7 @@ public class ChampionshipEvent {
     private Date startDate;
     private EventStatus eventStatus;
 
-    public ChampionshipEvent(int id, int championshipGrandPrixId, EventType eventType, Date startDate, EventStatus eventStatus) {
+    public Event(int id, int championshipGrandPrixId, EventType eventType, Date startDate, EventStatus eventStatus) {
         this.id = id;
         this.championshipGrandPrixId = championshipGrandPrixId;
         this.eventType = eventType;
@@ -21,7 +21,7 @@ public class ChampionshipEvent {
         this.eventStatus = eventStatus;
     }
 
-    public ChampionshipEvent createEvent(int id, int championshipGrandPrixId, EventType eventType, Date startDate, EventStatus eventStatus) {
+    public Event createEvent(int id, int championshipGrandPrixId, EventType eventType, Date startDate, EventStatus eventStatus) {
         if(id <= 0){
             throw new IllegalArgumentException("ChampionshipEvent ID must be greater than 0");
         }
@@ -34,7 +34,7 @@ public class ChampionshipEvent {
         if(startDate == null){
             throw new IllegalArgumentException("Championship Start Date is null");
         }
-        return new ChampionshipEvent(id, championshipGrandPrixId, eventType, startDate, eventStatus);
+        return new Event(id, championshipGrandPrixId, eventType, startDate, eventStatus);
     }
 
     public int getId() {
