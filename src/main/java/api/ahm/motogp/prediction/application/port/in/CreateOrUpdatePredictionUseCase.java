@@ -5,5 +5,5 @@ import api.ahm.motogp.prediction.infrastructure.adapter.in.rest.UserEventPredict
 
 public interface CreateOrUpdatePredictionUseCase {
 
-    UserEventPredictionResponse createOrUpdateUserEventPrediction(CreateOrUpdatePredictionQuery prediction);
+    UserEventPredictionResponse createOrUpdateUserEventPrediction(CreateOrUpdatePredictionQuery prediction, long leagueId);
 }

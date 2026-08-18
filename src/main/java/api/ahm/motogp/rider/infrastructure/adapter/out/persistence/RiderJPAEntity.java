@@ -8,7 +8,10 @@ import java.util.Date;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name="rider")
+@Table(name="rider",
+uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"name"})
+        })
 public class RiderJPAEntity {
 
     @Id

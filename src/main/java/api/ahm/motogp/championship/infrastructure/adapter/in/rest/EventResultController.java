@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("events/{eventId}/results")
-public class ChampionshipEventResultController {
+public class EventResultController {
 
     private final CreateEventResultUseCase createChampionshipGrandPrixEventResultUseCase;
 
-    public ChampionshipEventResultController(CreateEventResultUseCase createChampionshipGrandPrixEventResultUseCase) {
+    public EventResultController(CreateEventResultUseCase createChampionshipGrandPrixEventResultUseCase) {
         this.createChampionshipGrandPrixEventResultUseCase = createChampionshipGrandPrixEventResultUseCase;
     }
 
     @PostMapping("/bulk")
     public ResponseEntity<?> createResults(@PathVariable int eventId,
-                                           @Valid @RequestBody CreateChampionshipEventResultBulkRequest resultsBulk) {
+                                           @Valid @RequestBody CreateEventResultBulkRequest resultsBulk) {
         createChampionshipGrandPrixEventResultUseCase.createResults(
                 ChampionshipEventResultMapper.toCommand(resultsBulk, eventId)
         );

@@ -9,6 +9,7 @@ import api.ahm.motogp.identity.application.exception.UsernameAlreadyExistsExcept
 import api.ahm.motogp.identity.domain.exception.InvalidEmailException;
 import api.ahm.motogp.identity.domain.exception.InvalidUsernameException;
 import api.ahm.motogp.identity.domain.exception.InvalidUsernameLengthException;
+import api.ahm.motogp.league.application.exception.LeagueNotFoundException;
 import api.ahm.motogp.prediction.application.exception.PredictionNotFoundException;
 import api.ahm.motogp.rider.application.exception.RiderIsNotActiveException;
 import api.ahm.motogp.rider.application.exception.RiderNameAlreadyExistsException;
@@ -217,6 +218,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TeamIsNotActiveException.class)
     public ResponseEntity<?> handleTeamIsNotActiveException(TeamIsNotActiveException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    // LEAGUES
+    @ExceptionHandler(LeagueNotFoundException.class)
+    public ResponseEntity<?> handleLeagueChampionshipNotFoundException(LeagueNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
     }
 
     // PREDICTION

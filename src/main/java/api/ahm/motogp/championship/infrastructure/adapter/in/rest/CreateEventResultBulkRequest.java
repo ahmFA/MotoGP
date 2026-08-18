@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record CreateChampionshipEventResultBulkRequest(
+public record CreateEventResultBulkRequest(
         @NotEmpty
         @Size(max = 100)
         List<@Valid ResultEntry> results

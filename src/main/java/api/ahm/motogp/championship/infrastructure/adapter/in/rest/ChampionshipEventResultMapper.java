@@ -8,7 +8,7 @@ final class ChampionshipEventResultMapper {
     private ChampionshipEventResultMapper() {
     }
 
-    static CreateEventResultCommand toCommand(CreateChampionshipEventResultBulkRequest request,
+    static CreateEventResultCommand toCommand(CreateEventResultBulkRequest request,
                                               int eventId) {
         return new CreateEventResultCommand(
                 eventId,
@@ -19,7 +19,7 @@ final class ChampionshipEventResultMapper {
         );
     }
 
-    private static EventResultCommand toCommand(CreateChampionshipEventResultBulkRequest.ResultEntry result) {
+    private static EventResultCommand toCommand(CreateEventResultBulkRequest.ResultEntry result) {
         return new EventResultCommand(
                 result.championshipRiderId(),
                 result.position(),

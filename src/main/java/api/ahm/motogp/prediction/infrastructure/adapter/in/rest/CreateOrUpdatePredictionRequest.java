@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreateOrUpdatePredictionRequest(
         @NotNull
+        long leagueId,
+        @NotNull
         long first,
         @NotNull
         long second,

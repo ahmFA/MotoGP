@@ -9,6 +9,8 @@ import api.ahm.motogp.championship.application.port.out.ChampionshipRiderReposit
 import api.ahm.motogp.championship.domain.model.Event;
 import api.ahm.motogp.championship.domain.model.valueobjects.EventId;
 import api.ahm.motogp.grandprix.application.port.out.GrandPrixRepositoryPort;
+import api.ahm.motogp.league.application.exception.LeagueNotFoundException;
+import api.ahm.motogp.league.application.port.out.LeagueRepositoryPort;
 import api.ahm.motogp.prediction.application.port.in.CreateOrUpdatePredictionUseCase;
 import api.ahm.motogp.prediction.application.port.out.CreateOrUpdatePredictionRepositoryPort;
 import api.ahm.motogp.prediction.application.port.query.CreateOrUpdatePredictionQuery;
@@ -26,20 +28,26 @@ public class CreateOrUpdatePredictionService implements CreateOrUpdatePrediction
     private final GrandPrixRepositoryPort grandPrixRepositoryPort;
     private final EventRepositoryPort eventRepositoryPort;
     private final ChampionshipRiderRepositoryPort riderRepositoryPort;
+    private final LeagueRepositoryPort leagueRepositoryPort;
 
     public CreateOrUpdatePredictionService(CreateOrUpdatePredictionRepositoryPort createOrUpdatePredictionRepositoryPort,
                                            GrandPrixRepositoryPort grandPrixRepositoryPort,
                                            EventRepositoryPort eventRepositoryPort,
-                                           ChampionshipRiderRepositoryPort riderRepositoryPort) {
+                                           ChampionshipRiderRepositoryPort riderRepositoryPort,
+                                           LeagueRepositoryPort leagueRepositoryPort) {
         this.createOrUpdatePredictionRepositoryPort = createOrUpdatePredictionRepositoryPort;
         this.grandPrixRepositoryPort = grandPrixRepositoryPort;
         this.eventRepositoryPort = eventRepositoryPort;
         this.riderRepositoryPort = riderRepositoryPort;
+        this.leagueRepositoryPort = leagueRepositoryPort;
     }
 
     @Override
-    public UserEventPredictionResponse createOrUpdateUserEventPrediction(CreateOrUpdatePredictionQuery predictionQuery) {
+    public UserEventPredictionResponse createOrUpdateUserEventPrediction(CreateOrUpdatePredictionQuery predictionQuery, long leagueId) {
         Prediction prediction = toDomain(predictionQuery);
+        if(leagueRepositoryPort.existsLeague(leagueId)){
+            throw new LeagueNotFoundException(leagueId);
+        }
         if(!eventRepositoryPort.existsChampionshipGrandPrixEventById(Math.toIntExact(prediction.getEventId().id()))){
             throw new EventNotFoundException(Math.toIntExact(prediction.getEventId().id()));
         }

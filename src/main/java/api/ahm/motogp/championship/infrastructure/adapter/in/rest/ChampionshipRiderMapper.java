@@ -11,7 +11,7 @@ final class ChampionshipRiderMapper {
     static CreateChampionshipRiderCommand toCommand(CreateChampionshipRiderRequest championshipRiderRequest, int championshipId) {
         return new CreateChampionshipRiderCommand(
                 championshipRiderRequest.riderId(),
-                championshipRiderRequest.teamId(),
+                championshipRiderRequest.championshipTeamId(),
                 championshipId,
                 championshipRiderRequest.number()
         );
