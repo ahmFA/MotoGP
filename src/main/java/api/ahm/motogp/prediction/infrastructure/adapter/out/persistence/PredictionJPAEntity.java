@@ -2,7 +2,7 @@ package api.ahm.motogp.prediction.infrastructure.adapter.out.persistence;
 
 import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.EventJPAEntity;
 import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.ChampionshipRiderJPAEntity;
-import api.ahm.motogp.identity.infrastructure.adapter.out.persistence.UserJPAEntity;
+import api.ahm.motogp.league.infrastructure.adapter.out.persistence.UserLeagueJPAEntity;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 uniqueConstraints = {
         @UniqueConstraint(name = "uk_user_event",
                 columnNames = {
-                        "user_id",
+                        "user_league_id",
                         "event_id"
                 })
 })
@@ -20,8 +20,8 @@ public class PredictionJPAEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private UserJPAEntity user;
+    @JoinColumn(name="user_league_id")
+    private UserLeagueJPAEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="event_id")
@@ -47,11 +47,11 @@ public class PredictionJPAEntity {
         this.id = id;
     }
 
-    public UserJPAEntity getUser() {
+    public UserLeagueJPAEntity getUser() {
         return user;
     }
 
-    public void setUser(UserJPAEntity user) {
+    public void setUser(UserLeagueJPAEntity user) {
         this.user = user;
     }
 

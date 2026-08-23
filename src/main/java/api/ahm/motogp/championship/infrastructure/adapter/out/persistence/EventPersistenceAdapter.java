@@ -8,6 +8,8 @@ import api.ahm.motogp.championship.domain.model.Event;
 import api.ahm.motogp.championship.domain.model.valueobjects.EventStatus;
 import api.ahm.motogp.championship.domain.model.valueobjects.EventType;
 import api.ahm.motogp.grandprix.infrastructure.adapter.out.persistence.GrandPrixJPAEntity;
+import api.ahm.motogp.league.infrastructure.adapter.out.persistence.EventCalculateStatusJPAEntity;
+import api.ahm.motogp.league.infrastructure.adapter.out.persistence.SpringDataEventCalculateStatusRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
@@ -20,13 +22,16 @@ public class EventPersistenceAdapter implements EventRepositoryPort {
 
     private final SpringDataEventRepository springDataEventRepository;
     private final SpringDataChampionshipGrandPrixRepository springDataChampionshipGrandPrixRepository;
+    private final SpringDataEventCalculateStatusRepository springDataEventCalculateStatusRepository;
     private final EntityManager em;
 
     public EventPersistenceAdapter(SpringDataEventRepository springDataEventRepository,
                                    SpringDataChampionshipGrandPrixRepository springDataChampionshipGrandPrixRepository,
+                                   SpringDataEventCalculateStatusRepository springDataEventCalculateStatusRepository,
                                    EntityManager em) {
         this.springDataEventRepository = springDataEventRepository;
         this.springDataChampionshipGrandPrixRepository = springDataChampionshipGrandPrixRepository;
+        this.springDataEventCalculateStatusRepository = springDataEventCalculateStatusRepository;
         this.em = em;
     }
 
@@ -75,10 +80,19 @@ public class EventPersistenceAdapter implements EventRepositoryPort {
     }
 
     @Override
-    public void createChampionshipGrandPrixEvents(List<EventCommand> events) {
+    public void createEvents(List<EventCommand> events) {
         List<EventJPAEntity> entities = events.stream()
                 .map(this::toEntity)
                 .toList();
+        List<EventCalculateStatusJPAEntity> eventStatus = new ArrayList<>();
+        for(EventJPAEntity entity : entities){
+            EventCalculateStatusJPAEntity status = new EventCalculateStatusJPAEntity();
+            status.setEvent(entity);
+            status.setStatus(EventCalculateStatusJPAEntity.CalculateStatus.PENDING);
+            status.setLastUpdated(null);
+            eventStatus.add(status);
+        }
+        springDataEventCalculateStatusRepository.saveAll(eventStatus);
         springDataEventRepository.saveAll(entities);
     }
 

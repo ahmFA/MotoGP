@@ -4,8 +4,8 @@ import api.ahm.motogp.championship.domain.model.valueobjects.EventId;
 import api.ahm.motogp.championship.domain.model.valueobjects.RiderId;
 import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.EventJPAEntity;
 import api.ahm.motogp.championship.infrastructure.adapter.out.persistence.ChampionshipRiderJPAEntity;
-import api.ahm.motogp.identity.domain.model.valueobjects.UserId;
-import api.ahm.motogp.identity.infrastructure.adapter.out.persistence.UserJPAEntity;
+import api.ahm.motogp.league.domain.model.valueobjects.UserLeagueId;
+import api.ahm.motogp.league.infrastructure.adapter.out.persistence.UserLeagueJPAEntity;
 import api.ahm.motogp.prediction.application.exception.PredictionNotFoundException;
 import api.ahm.motogp.prediction.application.port.out.CreateOrUpdatePredictionRepositoryPort;
 import api.ahm.motogp.prediction.domain.model.Prediction;
@@ -76,7 +76,7 @@ public class PredictionPersistenceAdapter implements CreateOrUpdatePredictionRep
     private Prediction toDomain(PredictionJPAEntity entity){
         return new Prediction(
                 entity.getId(),
-                new UserId(entity.getUser().getId()),
+                new UserLeagueId(entity.getUser().getId()),
                 new EventId((long) entity.getEvent().getId()),
                 new RiderId((long) entity.getFirstRider().getId()),
                 new RiderId((long) entity.getSecondRider().getId()),
@@ -85,7 +85,7 @@ public class PredictionPersistenceAdapter implements CreateOrUpdatePredictionRep
     }
 
     private PredictionJPAEntity toEntity(Prediction prediction){
-        UserJPAEntity userJPAEntity = entityManager.find(UserJPAEntity.class, prediction.getUserId().id());
+        UserLeagueJPAEntity userJPAEntity = entityManager.find(UserLeagueJPAEntity.class, prediction.getUserId().id());
         EventJPAEntity eventJPAEntity = entityManager.find(EventJPAEntity.class, prediction.getEventId().id());
         ChampionshipRiderJPAEntity firstRider = entityManager.find(ChampionshipRiderJPAEntity.class, prediction.getFirstRider().id());
         ChampionshipRiderJPAEntity secondRider = entityManager.find(ChampionshipRiderJPAEntity.class, prediction.getSecondRider().id());

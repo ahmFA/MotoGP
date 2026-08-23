@@ -72,7 +72,7 @@ public class CreateOrUpdatePredictionService implements CreateOrUpdatePrediction
     private Prediction toDomain(CreateOrUpdatePredictionQuery predictionQuery) {
         return new Prediction(
                 predictionQuery.id(),
-                predictionQuery.userId(),
+                predictionQuery.userLeagueId(),
                 predictionQuery.eventId(),
                 predictionQuery.firstRider(),
                 predictionQuery.secondRider(),

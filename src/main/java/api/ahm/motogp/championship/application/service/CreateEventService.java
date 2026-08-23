@@ -18,12 +18,12 @@ import java.util.Set;
 @Service
 public class CreateEventService implements CreateEventUseCase {
 
-    private final EventRepositoryPort championshipGrandPrixEventRepositoryPort;
+    private final EventRepositoryPort eventRepositoryPort;
     private final ChampionshipGrandPrixRepositoryPort championshipGrandPrixRepositoryPort;
 
-    public CreateEventService(EventRepositoryPort championshipGrandPrixEventRepositoryPort,
+    public CreateEventService(EventRepositoryPort eventRepositoryPort,
                               ChampionshipGrandPrixRepositoryPort championshipGrandPrixRepositoryPort) {
-        this.championshipGrandPrixEventRepositoryPort = championshipGrandPrixEventRepositoryPort;
+        this.eventRepositoryPort = eventRepositoryPort;
         this.championshipGrandPrixRepositoryPort = championshipGrandPrixRepositoryPort;
     }
 
@@ -34,7 +34,8 @@ public class CreateEventService implements CreateEventUseCase {
         validateChampionshipGrandPrixesExist(eventsCommand);
         validateEventsDoNotExist(eventsCommand);
 
-        championshipGrandPrixEventRepositoryPort.createChampionshipGrandPrixEvents(eventsCommand.events());
+        eventRepositoryPort.createEvents(eventsCommand.events());
+
     }
 
     private void validateNoDuplicatedEventsInRequest(CreateEventCommand eventsCommand) {
@@ -62,7 +63,7 @@ public class CreateEventService implements CreateEventUseCase {
 
     private void validateEventsDoNotExist(CreateEventCommand eventsCommand) {
         for (EventCommand event : eventsCommand.events()) {
-            if (championshipGrandPrixEventRepositoryPort.existsChampionshipGrandPrixEventByChampionshipGrandPrixIdAndEventType(
+            if (eventRepositoryPort.existsChampionshipGrandPrixEventByChampionshipGrandPrixIdAndEventType(
                     event.championshipGrandPrixId(),
                     event.eventType())) {
                 throw new EventAlreadyExistsException(

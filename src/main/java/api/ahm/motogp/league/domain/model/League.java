@@ -3,7 +3,8 @@ package api.ahm.motogp.league.domain.model;
 public record League(
         long id,
         int championshipId,
-        String name
+        String name,
+        Boolean active
 ) {
     public League {
         if (id <= 0) {

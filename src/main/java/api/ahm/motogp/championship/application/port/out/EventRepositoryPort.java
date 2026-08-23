@@ -11,7 +11,7 @@ public interface EventRepositoryPort {
     boolean existsChampionshipGrandPrixEventById(int championshipGrandPrixEventId);
     boolean existsChampionshipGrandPrixEventByChampionshipGrandPrixIdAndEventType(int championshipGrandPrixId,
                                                                                   EventType eventType);
-    void createChampionshipGrandPrixEvents(List<EventCommand> events);
+    void createEvents(List<EventCommand> events);
     EventCommand getEventByEventId(int eventId);
     Event getEventById(int eventId);
     List<EventView> getEventsByChampionship(int championshipId);

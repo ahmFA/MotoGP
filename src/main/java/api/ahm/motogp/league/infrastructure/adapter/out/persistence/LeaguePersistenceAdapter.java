@@ -25,6 +25,7 @@ public class LeaguePersistenceAdapter implements LeagueRepositoryPort {
         leagueJPAEntity.setId(0);
         leagueJPAEntity.setChampionship(entityManager.getReference(ChampionshipJPAEntity.class, createLeagueCommand.championshipId()));
         leagueJPAEntity.setName(createLeagueCommand.name());
+        leagueJPAEntity.setActive(true);
         return toDomain(springDataLeagueRepository.save(leagueJPAEntity));
     }
 
@@ -37,7 +38,8 @@ public class LeaguePersistenceAdapter implements LeagueRepositoryPort {
         return new League(
                 leagueJPAEntity.getId(),
                 leagueJPAEntity.getChampionship().getId(),
-                leagueJPAEntity.getName()
+                leagueJPAEntity.getName(),
+                leagueJPAEntity.isActive()
         );
     }
 }
