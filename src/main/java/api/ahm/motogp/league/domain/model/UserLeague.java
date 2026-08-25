@@ -6,7 +6,7 @@ import api.ahm.motogp.league.domain.model.valueobjects.UserLeagueId;
 public record UserLeague(
         UserLeagueId id,
         UserId userId,
-        long leagueId
+        Long leagueId
 ) {
     public UserLeague {
         if (leagueId <= 0) {

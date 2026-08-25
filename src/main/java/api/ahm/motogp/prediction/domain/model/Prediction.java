@@ -33,11 +33,11 @@ public class Prediction {
         this.id = id;
     }
 
-    public UserLeagueId getUserId() {
+    public UserLeagueId getUserLeagueId() {
         return userLeagueId;
     }
 
-    public void setUserId(UserLeagueId userId) {
+    public void setUserLeagueId(UserLeagueId userId) {
         this.userLeagueId = userId;
     }
 

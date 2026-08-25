@@ -7,10 +7,10 @@ import api.ahm.motogp.prediction.application.port.query.CreateOrUpdatePrediction
 
 public class PredictionMapper {
 
-    public static CreateOrUpdatePredictionQuery toCommand(CreateOrUpdatePredictionRequest userPrediction, Long eventId, Long userId){
+    public static CreateOrUpdatePredictionQuery toCommand(CreateOrUpdatePredictionRequest userPrediction, Long eventId, Long userLeagueId){
         return new CreateOrUpdatePredictionQuery(
                 null,
-                new UserLeagueId(userId),
+                new UserLeagueId(userLeagueId),
                 new EventId(eventId),
                 null,
                 null,

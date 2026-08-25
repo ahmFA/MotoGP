@@ -1,6 +1,7 @@
 package api.ahm.motogp.shared.infrastructure.rest;
 
 import api.ahm.motogp.championship.application.exception.*;
+import api.ahm.motogp.league.application.exception.UserLeagueIdNotFoundException;
 import api.ahm.motogp.shared.infrastructure.adapter.in.GlobalErrorResponse;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNameAlreadyExistsException;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNotFoundException;
@@ -242,6 +243,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserLeagueAlreadyExistsException.class)
     public ResponseEntity<?> handleUserLeagueAlreadyExistsException(UserLeagueAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(UserLeagueIdNotFoundException.class)
+    public ResponseEntity<?> handleUserLeagueIdNotFoundException(UserLeagueIdNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
     }
 
     // PREDICTION

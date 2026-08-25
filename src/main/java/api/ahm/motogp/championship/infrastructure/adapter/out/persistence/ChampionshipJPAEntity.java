@@ -21,7 +21,7 @@ public class ChampionshipJPAEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryJPAEntity category;
 
