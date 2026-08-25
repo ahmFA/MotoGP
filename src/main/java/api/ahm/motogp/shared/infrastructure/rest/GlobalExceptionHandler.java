@@ -9,6 +9,10 @@ import api.ahm.motogp.identity.application.exception.UsernameAlreadyExistsExcept
 import api.ahm.motogp.identity.domain.exception.InvalidEmailException;
 import api.ahm.motogp.identity.domain.exception.InvalidUsernameException;
 import api.ahm.motogp.identity.domain.exception.InvalidUsernameLengthException;
+import api.ahm.motogp.league.application.exception.LeagueNotFoundException;
+import api.ahm.motogp.league.application.exception.UserLeagueAlreadyExistsException;
+import api.ahm.motogp.league.application.exception.UserLeagueNotFoundException;
+import api.ahm.motogp.identity.application.exception.UserNotFoundException;
 import api.ahm.motogp.prediction.application.exception.PredictionNotFoundException;
 import api.ahm.motogp.rider.application.exception.RiderIsNotActiveException;
 import api.ahm.motogp.rider.application.exception.RiderNameAlreadyExistsException;
@@ -182,35 +186,61 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
-    // CHAMPIONSHIP GRAND PRIX EVENTS
-    @ExceptionHandler(ChampionshipEventDuplicatedInRequestException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventDuplicatedInRequestException(ChampionshipEventDuplicatedInRequestException ex) {
+    // EVENTS
+    @ExceptionHandler(EventDuplicatedInRequestException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventDuplicatedInRequestException(EventDuplicatedInRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
-    @ExceptionHandler(ChampionshipEventAlreadyExistsException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventAlreadyExistsException(ChampionshipEventAlreadyExistsException ex) {
+    @ExceptionHandler(EventAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventAlreadyExistsException(EventAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
-    @ExceptionHandler(ChampionshipEventNotFoundException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventNotFoundException(ChampionshipEventNotFoundException ex) {
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventNotFoundException(EventNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
     }
 
-    // CHAMPIONSHIP GRAND PRIX EVENT RESULTS
-    @ExceptionHandler(ChampionshipEventResultDuplicatedInRequestException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventResultDuplicatedInRequestException(ChampionshipEventResultDuplicatedInRequestException ex) {
+    @ExceptionHandler(EventCannotBePredictedException.class)
+    public ResponseEntity<?> handleEventCannotBePredictedException(EventCannotBePredictedException ex) {
+        return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(bodyResponse(ex, HttpStatus.PRECONDITION_FAILED));
+    }
+
+    // EVENT RESULTS
+    @ExceptionHandler(EventResultDuplicatedInRequestException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventResultDuplicatedInRequestException(EventResultDuplicatedInRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
-    @ExceptionHandler(ChampionshipEventResultAlreadyExistsException.class)
-    public ResponseEntity<?> handleChampionshipGrandPrixEventResultAlreadyExistsException(ChampionshipEventResultAlreadyExistsException ex) {
+    @ExceptionHandler(EventResultAlreadyExistsException.class)
+    public ResponseEntity<?> handleChampionshipGrandPrixEventResultAlreadyExistsException(EventResultAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(TeamIsNotActiveException.class)
     public ResponseEntity<?> handleTeamIsNotActiveException(TeamIsNotActiveException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
+    }
+
+    // LEAGUES
+    @ExceptionHandler(LeagueNotFoundException.class)
+    public ResponseEntity<?> handleLeagueChampionshipNotFoundException(LeagueNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(UserLeagueNotFoundException.class)
+    public ResponseEntity<?> handleUserLeagueNotFoundException(UserLeagueNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserLeagueUserNotFoundException(UserNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyResponse(ex, HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(UserLeagueAlreadyExistsException.class)
+    public ResponseEntity<?> handleUserLeagueAlreadyExistsException(UserLeagueAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
     }
 

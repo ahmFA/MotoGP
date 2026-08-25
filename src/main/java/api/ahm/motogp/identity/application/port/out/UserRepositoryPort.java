@@ -10,5 +10,6 @@ public interface UserRepositoryPort {
     Optional<User> getUser(int id);
     boolean existsUserByUsername(String username);
     boolean existsUserByEmail(String email);
+    boolean existsById(Long integer);
     User createUser(User user);
 }

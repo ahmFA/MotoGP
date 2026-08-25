@@ -2,19 +2,19 @@ package api.ahm.motogp.prediction.domain.model;
 
 import api.ahm.motogp.championship.domain.model.valueobjects.EventId;
 import api.ahm.motogp.championship.domain.model.valueobjects.RiderId;
-import api.ahm.motogp.identity.domain.model.valueobjects.UserId;
+import api.ahm.motogp.league.domain.model.valueobjects.UserLeagueId;
 
 public class Prediction {
     private Long id;
-    private UserId userId;
+    private UserLeagueId userLeagueId;
     private EventId eventId;
     private RiderId firstRider;
     private RiderId secondRider;
     private RiderId thirdRider;
 
-    public Prediction(Long id, UserId userId, EventId eventId, RiderId firstRider, RiderId secondRider, RiderId thirdRider) {
+    public Prediction(Long id, UserLeagueId userLeagueId, EventId eventId, RiderId firstRider, RiderId secondRider, RiderId thirdRider) {
         this.id = id;
-        this.userId = userId;
+        this.userLeagueId = userLeagueId;
         this.eventId = eventId;
         this.firstRider = firstRider;
         this.secondRider = secondRider;
@@ -33,12 +33,12 @@ public class Prediction {
         this.id = id;
     }
 
-    public UserId getUserId() {
-        return userId;
+    public UserLeagueId getUserId() {
+        return userLeagueId;
     }
 
-    public void setUserId(UserId userId) {
-        this.userId = userId;
+    public void setUserId(UserLeagueId userId) {
+        this.userLeagueId = userId;
     }
 
     public EventId getEventId() {

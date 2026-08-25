@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/events/{eventId}/predictions")
+@RequestMapping("/leagues/{leagueId}/events/{eventId}/predictions")
 public class UserEventPredictionController {
 
     private final CreateOrUpdatePredictionUseCase createOrUpdatePredictionUseCase;
@@ -17,10 +17,12 @@ public class UserEventPredictionController {
     }
 
     @PutMapping
-    public ResponseEntity<UserEventPredictionResponse> createOrUpdatePrediction(@PathVariable Long eventId, @Valid @RequestBody CreateOrUpdatePredictionRequest userPrediction){
+    public ResponseEntity<UserEventPredictionResponse> createOrUpdatePrediction(@PathVariable Long leagueId,@PathVariable Long eventId, @Valid @RequestBody CreateOrUpdatePredictionRequest userPrediction){
         // Falta obtener el usuario a través de la autenticacion
+        // Comprobar que leagueId existe
+        // Comprobar que el usuario pertenece a esa liga
         CreateOrUpdatePredictionQuery command = PredictionMapper.toCommand(userPrediction, eventId, 1L);
-        UserEventPredictionResponse response = createOrUpdatePredictionUseCase.createOrUpdateUserEventPrediction(command);
+        UserEventPredictionResponse response = createOrUpdatePredictionUseCase.createOrUpdateUserEventPrediction(command, leagueId);
         return ResponseEntity.ok(response);
     }
 }

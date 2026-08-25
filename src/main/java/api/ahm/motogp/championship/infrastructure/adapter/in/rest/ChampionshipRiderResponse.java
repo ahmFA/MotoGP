@@ -4,8 +4,8 @@ public record ChampionshipRiderResponse(
         int id,
         int riderId,
         String riderName,
-        int teamId,
-        String teamName,
+        int championshipTeamId,
+        String championshipTeamName,
         int number
 ) {
 }

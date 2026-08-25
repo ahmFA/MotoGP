@@ -1,12 +1,16 @@
 package api.ahm.motogp.prediction.application.service;
 
-import api.ahm.motogp.championship.application.exception.ChampionshipEventNotFoundException;
+import api.ahm.motogp.championship.application.exception.EventNotFoundException;
 import api.ahm.motogp.championship.application.exception.ChampionshipRiderNotFoundException;
+import api.ahm.motogp.championship.application.exception.EventCannotBePredictedException;
 import api.ahm.motogp.championship.application.port.in.command.EventCommand;
-import api.ahm.motogp.championship.application.port.out.ChampionshipEventRepositoryPort;
+import api.ahm.motogp.championship.application.port.out.EventRepositoryPort;
 import api.ahm.motogp.championship.application.port.out.ChampionshipRiderRepositoryPort;
+import api.ahm.motogp.championship.domain.model.Event;
 import api.ahm.motogp.championship.domain.model.valueobjects.EventId;
 import api.ahm.motogp.grandprix.application.port.out.GrandPrixRepositoryPort;
+import api.ahm.motogp.league.application.exception.LeagueNotFoundException;
+import api.ahm.motogp.league.application.port.out.LeagueRepositoryPort;
 import api.ahm.motogp.prediction.application.port.in.CreateOrUpdatePredictionUseCase;
 import api.ahm.motogp.prediction.application.port.out.CreateOrUpdatePredictionRepositoryPort;
 import api.ahm.motogp.prediction.application.port.query.CreateOrUpdatePredictionQuery;
@@ -22,24 +26,30 @@ public class CreateOrUpdatePredictionService implements CreateOrUpdatePrediction
 
     private final CreateOrUpdatePredictionRepositoryPort createOrUpdatePredictionRepositoryPort;
     private final GrandPrixRepositoryPort grandPrixRepositoryPort;
-    private final ChampionshipEventRepositoryPort championshipEventRepositoryPort;
+    private final EventRepositoryPort eventRepositoryPort;
     private final ChampionshipRiderRepositoryPort riderRepositoryPort;
+    private final LeagueRepositoryPort leagueRepositoryPort;
 
     public CreateOrUpdatePredictionService(CreateOrUpdatePredictionRepositoryPort createOrUpdatePredictionRepositoryPort,
                                            GrandPrixRepositoryPort grandPrixRepositoryPort,
-                                           ChampionshipEventRepositoryPort championshipEventRepositoryPort,
-                                           ChampionshipRiderRepositoryPort riderRepositoryPort) {
+                                           EventRepositoryPort eventRepositoryPort,
+                                           ChampionshipRiderRepositoryPort riderRepositoryPort,
+                                           LeagueRepositoryPort leagueRepositoryPort) {
         this.createOrUpdatePredictionRepositoryPort = createOrUpdatePredictionRepositoryPort;
         this.grandPrixRepositoryPort = grandPrixRepositoryPort;
-        this.championshipEventRepositoryPort = championshipEventRepositoryPort;
+        this.eventRepositoryPort = eventRepositoryPort;
         this.riderRepositoryPort = riderRepositoryPort;
+        this.leagueRepositoryPort = leagueRepositoryPort;
     }
 
     @Override
-    public UserEventPredictionResponse createOrUpdateUserEventPrediction(CreateOrUpdatePredictionQuery predictionQuery) {
+    public UserEventPredictionResponse createOrUpdateUserEventPrediction(CreateOrUpdatePredictionQuery predictionQuery, long leagueId) {
         Prediction prediction = toDomain(predictionQuery);
-        if(!championshipEventRepositoryPort.existsChampionshipGrandPrixEventById(Math.toIntExact(prediction.getEventId().id()))){
-            throw new ChampionshipEventNotFoundException(Math.toIntExact(prediction.getEventId().id()));
+        if(leagueRepositoryPort.existsLeague(leagueId)){
+            throw new LeagueNotFoundException(leagueId);
+        }
+        if(!eventRepositoryPort.existsChampionshipGrandPrixEventById(Math.toIntExact(prediction.getEventId().id()))){
+            throw new EventNotFoundException(Math.toIntExact(prediction.getEventId().id()));
         }
         if(!riderRepositoryPort.existsChampionshipRiderById(Math.toIntExact(prediction.getFirstRider().id()))){
             throw new ChampionshipRiderNotFoundException(Math.toIntExact(prediction.getFirstRider().id()));
@@ -50,6 +60,10 @@ public class CreateOrUpdatePredictionService implements CreateOrUpdatePrediction
         if(!riderRepositoryPort.existsChampionshipRiderById(Math.toIntExact(prediction.getThirdRider().id()))){
             throw new ChampionshipRiderNotFoundException(Math.toIntExact(prediction.getThirdRider().id()));
         }
+        Event event = eventRepositoryPort.getEventById(Math.toIntExact(prediction.getEventId().id()));
+        if(!event.canBePredicted()){
+            throw new EventCannotBePredictedException(event.getId());
+        }
         Prediction newPrediction = createOrUpdatePredictionRepositoryPort.createPrediction(prediction);
         return toResponse(newPrediction);
     }
@@ -58,7 +72,7 @@ public class CreateOrUpdatePredictionService implements CreateOrUpdatePrediction
     private Prediction toDomain(CreateOrUpdatePredictionQuery predictionQuery) {
         return new Prediction(
                 predictionQuery.id(),
-                predictionQuery.userId(),
+                predictionQuery.userLeagueId(),
                 predictionQuery.eventId(),
                 predictionQuery.firstRider(),
                 predictionQuery.secondRider(),
@@ -67,7 +81,7 @@ public class CreateOrUpdatePredictionService implements CreateOrUpdatePrediction
     }
 
     private UserEventPredictionResponse toResponse(Prediction prediction) {
-        EventCommand eventCommand = championshipEventRepositoryPort.getEventByEventId(Math.toIntExact(prediction.getEventId().id()));
+        EventCommand eventCommand = eventRepositoryPort.getEventByEventId(Math.toIntExact(prediction.getEventId().id()));
         Optional<GrandPrix> gp = grandPrixRepositoryPort.getGrandPrix(eventCommand.championshipGrandPrixId());
         GrandPrix grandPrix = gp.get();
         return new UserEventPredictionResponse(

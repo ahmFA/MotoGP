@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "team")
+@Table(name = "team",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"name"})
+        })
 public class TeamJPAEntity {
 
     @Id

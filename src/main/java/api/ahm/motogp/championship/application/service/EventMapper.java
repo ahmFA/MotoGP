@@ -1,12 +1,12 @@
 package api.ahm.motogp.championship.application.service;
 
 import api.ahm.motogp.championship.application.port.in.command.EventCommand;
-import api.ahm.motogp.championship.domain.model.ChampionshipEvent;
+import api.ahm.motogp.championship.domain.model.Event;
 
 public class EventMapper {
 
-    public static ChampionshipEvent toDomain(EventCommand command){
-        return new ChampionshipEvent(
+    public static Event toDomain(EventCommand command){
+        return new Event(
                 command.id(),
                 command.championshipGrandPrixId(),
                 command.eventType(),
@@ -15,13 +15,13 @@ public class EventMapper {
         );
     }
 
-    public static EventCommand toCommand(ChampionshipEvent championshipEvent){
+    public static EventCommand toCommand(Event event){
         return new EventCommand(
-                championshipEvent.getId(),
-                championshipEvent.getChampionshipGrandPrixId(),
-                championshipEvent.getEventType(),
-                championshipEvent.getStartDate(),
-                championshipEvent.getEventStatus()
+                event.getId(),
+                event.getChampionshipGrandPrixId(),
+                event.getEventType(),
+                event.getStartDate(),
+                event.getEventStatus()
         );
     }
 }

@@ -10,7 +10,7 @@ public record CreateChampionshipRiderRequest(
         Integer riderId,
         @NotNull
         @Positive
-        Integer teamId,
+        Integer championshipTeamId,
         @NotNull
         @PositiveOrZero
         Integer number
