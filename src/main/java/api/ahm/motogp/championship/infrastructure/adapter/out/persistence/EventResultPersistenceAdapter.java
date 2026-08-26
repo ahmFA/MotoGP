@@ -3,6 +3,7 @@ package api.ahm.motogp.championship.infrastructure.adapter.out.persistence;
 import api.ahm.motogp.championship.application.port.in.command.CreateEventResultCommand;
 import api.ahm.motogp.championship.application.port.in.command.EventResultCommand;
 import api.ahm.motogp.championship.application.port.out.EventResultRepositoryPort;
+import api.ahm.motogp.championship.application.port.query.EventResultView;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +37,11 @@ public class EventResultPersistenceAdapter implements EventResultRepositoryPort 
                 .map(result -> toEntity(resultsCommand.championshipEventId(), result))
                 .toList();
         springDataChampionshipGrandPrixEventResultRepository.saveAll(entities);
+    }
+
+    @Override
+    public List<EventResultView> getEventResults(int eventId) {
+        return springDataChampionshipGrandPrixEventResultRepository.getEventResults(eventId);
     }
 
     private EventResultJPAEntity toEntity(int championshipEventId, EventResultCommand resultCommand) {
