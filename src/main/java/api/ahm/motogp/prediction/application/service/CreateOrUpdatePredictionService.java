@@ -9,8 +9,12 @@ import api.ahm.motogp.championship.application.port.out.ChampionshipRiderReposit
 import api.ahm.motogp.championship.domain.model.Event;
 import api.ahm.motogp.championship.domain.model.valueobjects.EventId;
 import api.ahm.motogp.grandprix.application.port.out.GrandPrixRepositoryPort;
+import api.ahm.motogp.identity.application.port.out.UserRepositoryPort;
 import api.ahm.motogp.league.application.exception.LeagueNotFoundException;
+import api.ahm.motogp.league.application.exception.UserLeagueIdNotFoundException;
 import api.ahm.motogp.league.application.port.out.LeagueRepositoryPort;
+import api.ahm.motogp.league.application.port.out.UserLeagueRepositoryPort;
+import api.ahm.motogp.league.domain.model.UserLeague;
 import api.ahm.motogp.prediction.application.port.in.CreateOrUpdatePredictionUseCase;
 import api.ahm.motogp.prediction.application.port.out.CreateOrUpdatePredictionRepositoryPort;
 import api.ahm.motogp.prediction.application.port.query.CreateOrUpdatePredictionQuery;
@@ -29,17 +33,20 @@ public class CreateOrUpdatePredictionService implements CreateOrUpdatePrediction
     private final EventRepositoryPort eventRepositoryPort;
     private final ChampionshipRiderRepositoryPort riderRepositoryPort;
     private final LeagueRepositoryPort leagueRepositoryPort;
+    private final UserLeagueRepositoryPort userLeagueRepositoryPort;
 
     public CreateOrUpdatePredictionService(CreateOrUpdatePredictionRepositoryPort createOrUpdatePredictionRepositoryPort,
                                            GrandPrixRepositoryPort grandPrixRepositoryPort,
                                            EventRepositoryPort eventRepositoryPort,
                                            ChampionshipRiderRepositoryPort riderRepositoryPort,
-                                           LeagueRepositoryPort leagueRepositoryPort) {
+                                           LeagueRepositoryPort leagueRepositoryPort,
+                                           UserLeagueRepositoryPort userLeagueRepositoryPort) {
         this.createOrUpdatePredictionRepositoryPort = createOrUpdatePredictionRepositoryPort;
         this.grandPrixRepositoryPort = grandPrixRepositoryPort;
         this.eventRepositoryPort = eventRepositoryPort;
         this.riderRepositoryPort = riderRepositoryPort;
         this.leagueRepositoryPort = leagueRepositoryPort;
+        this.userLeagueRepositoryPort = userLeagueRepositoryPort;
     }
 
     @Override
@@ -63,6 +70,10 @@ public class CreateOrUpdatePredictionService implements CreateOrUpdatePrediction
         Event event = eventRepositoryPort.getEventById(Math.toIntExact(prediction.getEventId().id()));
         if(!event.canBePredicted()){
             throw new EventCannotBePredictedException(event.getId());
+        }
+        UserLeague user = userLeagueRepositoryPort.getUserLeagueById(prediction.getUserLeagueId().id());
+        if(!userLeagueRepositoryPort.existsUserLeagueByLeagueIdAndUserId(leagueId, user.userId().id())){
+            throw new UserLeagueIdNotFoundException(leagueId);
         }
         Prediction newPrediction = createOrUpdatePredictionRepositoryPort.createPrediction(prediction);
         return toResponse(newPrediction);

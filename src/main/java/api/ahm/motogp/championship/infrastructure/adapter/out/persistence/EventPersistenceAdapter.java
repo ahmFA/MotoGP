@@ -7,7 +7,6 @@ import api.ahm.motogp.championship.application.port.query.EventView;
 import api.ahm.motogp.championship.domain.model.Event;
 import api.ahm.motogp.championship.domain.model.valueobjects.EventStatus;
 import api.ahm.motogp.championship.domain.model.valueobjects.EventType;
-import api.ahm.motogp.grandprix.infrastructure.adapter.out.persistence.GrandPrixJPAEntity;
 import api.ahm.motogp.league.infrastructure.adapter.out.persistence.EventCalculateStatusJPAEntity;
 import api.ahm.motogp.league.infrastructure.adapter.out.persistence.SpringDataEventCalculateStatusRepository;
 import jakarta.persistence.EntityManager;
@@ -59,8 +58,8 @@ public class EventPersistenceAdapter implements EventRepositoryPort {
         List<EventJPAEntity> events = springDataEventRepository.findByChampionshipGrandPrixIdIn(ids);
         List<EventView> eventViews = new ArrayList<>();
         for(EventJPAEntity event : events){
-            GrandPrixJPAEntity gp = em.find(GrandPrixJPAEntity.class, event.getChampionshipGrandPrix().getId());
-            eventViews.add(toView(event, gp.getName()));
+            ChampionshipGrandPrixJPAEntity gp = em.find(ChampionshipGrandPrixJPAEntity.class, event.getChampionshipGrandPrix().getId());
+            eventViews.add(toView(event, gp.getGrandPrix().getName()));
         }
         return eventViews;
     }
@@ -108,6 +107,7 @@ public class EventPersistenceAdapter implements EventRepositoryPort {
         entity.setChampionshipGrandPrix(em.getReference(ChampionshipGrandPrixJPAEntity.class, eventCommand.championshipGrandPrixId()));
         entity.setEventType(toEntityEventType(eventCommand.eventType()));
         entity.setStartDate(eventCommand.startDate());
+        entity.setEventStatus(toEntityEventStatus(eventCommand.eventStatus()));
         return entity;
     }
 
@@ -122,6 +122,10 @@ public class EventPersistenceAdapter implements EventRepositoryPort {
 
     private EventStatus toEventStatusDomain(EventJPAEntity.EventStatus eventStatus) {
         return EventStatus.valueOf(eventStatus.name());
+    }
+
+    private EventJPAEntity.EventStatus toEntityEventStatus(EventStatus eventStatus) {
+        return EventJPAEntity.EventStatus.valueOf(eventStatus.name());
     }
 
     private EventCommand toCommand(EventJPAEntity entity) {

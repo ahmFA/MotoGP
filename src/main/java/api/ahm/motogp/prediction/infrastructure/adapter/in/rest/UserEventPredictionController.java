@@ -19,9 +19,7 @@ public class UserEventPredictionController {
     @PutMapping
     public ResponseEntity<UserEventPredictionResponse> createOrUpdatePrediction(@PathVariable Long leagueId,@PathVariable Long eventId, @Valid @RequestBody CreateOrUpdatePredictionRequest userPrediction){
         // Falta obtener el usuario a través de la autenticacion
-        // Comprobar que leagueId existe
-        // Comprobar que el usuario pertenece a esa liga
-        CreateOrUpdatePredictionQuery command = PredictionMapper.toCommand(userPrediction, eventId, 1L);
+        CreateOrUpdatePredictionQuery command = PredictionMapper.toCommand(userPrediction, eventId, 11L);
         UserEventPredictionResponse response = createOrUpdatePredictionUseCase.createOrUpdateUserEventPrediction(command, leagueId);
         return ResponseEntity.ok(response);
     }

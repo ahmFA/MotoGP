@@ -1,9 +1,13 @@
 package api.ahm.motogp.league.infrastructure.adapter.out.persistence;
 
+import api.ahm.motogp.identity.domain.model.valueobjects.UserId;
 import api.ahm.motogp.identity.infrastructure.adapter.out.persistence.UserJPAEntity;
+import api.ahm.motogp.league.application.exception.UserLeagueIdNotFoundException;
 import api.ahm.motogp.league.application.port.in.command.CreateUserLeagueCommand;
 import api.ahm.motogp.league.application.port.out.UserLeagueRepositoryPort;
 import api.ahm.motogp.league.application.port.query.UserLeagueView;
+import api.ahm.motogp.league.domain.model.UserLeague;
+import api.ahm.motogp.league.domain.model.valueobjects.UserLeagueId;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,5 +58,20 @@ public class UserLeaguePersistenceAdapter implements UserLeagueRepositoryPort {
         springDataUserLeaguePointsRepository.save(ulPoints);
 
         return springDataUserLeagueRepository.getUserByLeague(savedEntity.getLeague().getId(), savedEntity.getUser().getId());
+    }
+
+    @Override
+    public UserLeague getUserLeagueById(long userLeagueId) {
+        UserLeagueJPAEntity entity = springDataUserLeagueRepository.findById(userLeagueId)
+                .orElseThrow(() -> new UserLeagueIdNotFoundException(userLeagueId));
+        return toDomain(entity);
+    }
+
+    private UserLeague toDomain(UserLeagueJPAEntity entity) {
+        return new UserLeague(
+                new UserLeagueId(entity.getId()),
+                new UserId(entity.getLeague().getId()),
+                entity.getUser().getId()
+        );
     }
 }

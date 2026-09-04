@@ -42,7 +42,7 @@ public class PredictionPersistenceAdapter implements CreateOrUpdatePredictionRep
 
     @Override
     public Prediction getPrediction(Prediction prediction){
-        Optional<PredictionJPAEntity> entity = predictionRepository.findByUserIdAndEventId(prediction.getUserId().id(), prediction.getEventId().id());
+        Optional<PredictionJPAEntity> entity = predictionRepository.findByUserIdAndEventId(prediction.getUserLeagueId().id(), prediction.getEventId().id());
         if(entity.isEmpty()){
             throw new IllegalArgumentException("Prediction not found");
         }
@@ -52,12 +52,12 @@ public class PredictionPersistenceAdapter implements CreateOrUpdatePredictionRep
 
     @Override
     public boolean existsPrediction(Prediction prediction){
-        return predictionRepository.existsByUserIdAndEventId(prediction.getUserId().id(), prediction.getEventId().id());
+        return predictionRepository.existsByUserIdAndEventId(prediction.getUserLeagueId().id(), prediction.getEventId().id());
     }
 
     @Override
     public Prediction updatePrediction(Prediction prediction){
-        Optional<PredictionJPAEntity> entity = predictionRepository.findByUserIdAndEventId(prediction.getUserId().id(), prediction.getEventId().id());
+        Optional<PredictionJPAEntity> entity = predictionRepository.findByUserIdAndEventId(prediction.getUserLeagueId().id(), prediction.getEventId().id());
         if(entity.isEmpty()){
             throw new PredictionNotFoundException("Prediction not found");
         }
@@ -85,7 +85,7 @@ public class PredictionPersistenceAdapter implements CreateOrUpdatePredictionRep
     }
 
     private PredictionJPAEntity toEntity(Prediction prediction){
-        UserLeagueJPAEntity userJPAEntity = entityManager.find(UserLeagueJPAEntity.class, prediction.getUserId().id());
+        UserLeagueJPAEntity userJPAEntity = entityManager.find(UserLeagueJPAEntity.class, prediction.getUserLeagueId().id());
         EventJPAEntity eventJPAEntity = entityManager.find(EventJPAEntity.class, prediction.getEventId().id());
         ChampionshipRiderJPAEntity firstRider = entityManager.find(ChampionshipRiderJPAEntity.class, prediction.getFirstRider().id());
         ChampionshipRiderJPAEntity secondRider = entityManager.find(ChampionshipRiderJPAEntity.class, prediction.getSecondRider().id());
