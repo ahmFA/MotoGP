@@ -36,7 +36,7 @@ jobs:
              echo '=== Docker deploy ===' && \
              docker compose up -d && \
              echo '=== Containers ===' && \
-             docker compose ps \
+             docker compose ps && \
              echo '=== Health check ===' && \
              for i in $(seq 1 12); do \
               HEALTH=$(curl --fail https://api.grandprixpredictor.com/actuator/health || true) \
