@@ -24,3 +24,10 @@ jobs:
             -i ~/.ssh/github_actions_motogp \
             ${{ secrets.AWS_USERNAME }}@${{ secrets.AWS_HOST }} \
             "echo 'SSH connection successful' && hostname && docker --version && docker compose version"
+
+      - name: Git pull on AWS
+        run: |
+            ssh \
+              -i ~/.ssh/github_actions_motogp \
+              ${{ secrets.AWS_USERNAME }}@${{ secrets.AWS_HOST }} \
+              "cd /home/ubuntu/dev/MotoGP && git pull origin main"
