@@ -1,0 +1,26 @@
+name: Test SSH to AWS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-ssh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+
+          echo "${{ secrets.AWS_SSH_PRIVATE_KEY }}" > ~/.ssh/github_actions_motogp
+
+          chmod 600 ~/.ssh/github_actions_motogp
+
+          ssh-keyscan -H ${{ secrets.AWS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Test connection
+        run: |
+          ssh \
+            -i ~/.ssh/github_actions_motogp \
+            ${{ secrets.AWS_USERNAME }}@${{ secrets.AWS_HOST }} \
+            "echo 'SSH connection successful' && hostname && docker --version && docker compose version"
