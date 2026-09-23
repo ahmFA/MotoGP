@@ -3,6 +3,7 @@ name: Deploy to AWS
 on:
   push:
     branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -25,8 +26,9 @@ jobs:
         run: |
           ssh \
             -i ~/.ssh/github_actions_motogp \
-            ${{ secrets.AWS_USERNAME }}@${{ secrets.AWS_HOST }} \
-            "cd /home/ubuntu/dev/MotoGP && \
+            "${{ secrets.AWS_USERNAME }}@${{ secrets.AWS_HOST }}" \
+            'bash -se' <<'REMOTE'
+             cd /home/ubuntu/dev/MotoGP && \
              set -e && \
              echo '=== Git pull ===' && \
              git fetch origin main && \
@@ -38,15 +40,18 @@ jobs:
              echo '=== Containers ===' && \
              docker compose ps && \
              echo '=== Health check ===' && \
-             for i in $(seq 1 12); do \
-              HEALTH=$(curl --fail https://api.grandprixpredictor.com/actuator/health || true) \
-              echo "$HEALTH" \
-              if echo "$HEALTH" | grep -q '"status":"UP"'; then \
-              echo 'Health check OK' \
-              exit 0 \
-              fi \
-              echo 'Waiting for application...' \
-              sleep 5 \
-              done \
-              echo 'Health check failed' \
-              exit 1"
+             for i in $(seq 1 12); do
+                HEALTH="$(curl --fail https://api.grandprixpredictor.com/actuator/health || true)"
+                echo "$HEALTH"
+                if echo "$HEALTH" | grep -q '"status":"UP"'; then
+                  echo "Health check OK"
+                  exit 0
+                fi
+        
+              echo "Waiting for application..."
+              sleep 5
+              done
+              echo 'Health check failed'
+              docker compose logs --tail=100
+              exit 1
+              REMOTE
