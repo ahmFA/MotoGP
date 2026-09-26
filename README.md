@@ -31,9 +31,9 @@ src/main/java/com/motogp/predictor
 ├── domain/                               # 🟢 Pure Business Logic (Framework-independent)
 │   ├── model/                            # Aggregates, Entities, Value Objects
 │   │   ├── championship/                 # Championship, ChampionshipEvent, Circuit
-│   │   ├── competitor/                   # Rider, Team, RiderNumber (Record)
+│   │   ├── rider/                        # Rider, Team, RiderNumber (Record)
 │   │   ├── prediction/                   # Prediction (Aggregate Root), PredictionScore
-│   │   └── shared/                       # EntityId, DateRange, DomainValidationException
+│   │   └── shared/                       # Exceptions
 │   └── repository/                       # Outbound Ports (Driven Domain Interfaces)
 │       ├── ChampionshipRepository.java
 │       ├── RiderRepository.java
@@ -43,31 +43,29 @@ src/main/java/com/motogp/predictor
 │   ├── port/
 │   │   ├── in/                           # Driving / Inbound Ports
 │   │   │   ├── SubmitPredictionUseCase.java
-│   │   │   ├── RegisterRiderUseCase.java
-│   │   │   └── CalculateEventScoresUseCase.java
+│   │   │   ├── CreateRiderUseCase.java
 │   │   └── out/                          # Driven Ports (External events / notifications)
 │   │       └── ChampionshipRepositoryPort.java
 │   └── service/                          # Application Services (Use Case implementations)
-│       ├── PredictionApplicationService.java
+│       ├── CalculateUserPointsService.java
 │       └── ChampionshipApplicationService.java
 │
 └── infrastructure/                       # 🔴 Adapters & Framework Configuration
     ├── adapter/
-    │   ├── in/
-    │   │   └── rest/                     # Inbound HTTP Adapters (Spring MVC Controllers)
-    │   │       ├── controller/           # PredictionController, RiderController, EventController
-    │   │       ├── dto/                  # Request / Response DTOs (Java Records)
-    │   │       └── mapper/               # DTO <-> Application Command Mappers
-    │   └── out/
-    │       └── persistence/              # Outbound DB Adapters (Spring Data JPA)
-    │           ├── entity/               # JPA Entities (@Entity, @Table)
-    │           │   ├── PredictionJpaEntity.java
-    │           │   ├── RiderJpaEntity.java
-    │           │   └── EventJpaEntity.java
-    │           ├── repository/           # Spring Data JPA interfaces
-    │           ├── mapper/               # JPA Entity <-> Domain Model Mappers
-    │           └── PredictionPersistenceAdapter.java
-    └── config/                           # Spring beans, Security, OpenAPI, Database configuration
+       ├── in/
+       │   └── rest/                     # Inbound HTTP Adapters (Spring MVC Controllers)
+       │       ├── controller/           # PredictionController, RiderController, EventController
+       │       ├── dto/                  # Request / Response DTOs (Java Records)
+       │       └── mapper/               # DTO <-> Application Command Mappers
+       └── out/
+           └── persistence/              # Outbound DB Adapters (Spring Data JPA)
+               ├── entity/               # JPA Entities (@Entity, @Table)
+               │   ├── PredictionJpaEntity.java
+               │   ├── RiderJpaEntity.java
+               │   └── EventJpaEntity.java
+               ├── repository/           # Spring Data JPA interfaces
+               ├── mapper/               # JPA Entity <-> Domain Model Mappers
+               └── PredictionPersistenceAdapter.java
 ```
 
 ---
