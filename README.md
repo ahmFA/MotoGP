@@ -103,6 +103,17 @@ src/main/java/com/motogp/predictor
 
 ---
 
+## Status & Roadmap (Pendientes)
+
+The project is currently in the active development phase. The following features and integrations are planned or currently being implemented:
+
+- [ ] **Autenticación y Autorización:** Implementación de seguridad con Spring Security y tokens JWT para control de acceso y gestión de usuarios. *(Working on it)*
+- [ ] **Suite de Tests Unitarios:** Cobertura de lógica de dominio y servicios de aplicación mediante JUnit 5 y Mockito.
+- [ ] **Caché con Redis:** Optimización de rendimiento para consultas frecuentes de calendarios y clasificaciones.
+- [ ] **Tests de Arquitectura (ArchUnit):** Automatización de reglas de validación para garantizar el desacoplamiento de capas y prevenir fugas de frameworks en el dominio.
+
+---
+
 ## Author
 
 - **Alejandro Hortelano** - *Senior Backend Software Engineer*
