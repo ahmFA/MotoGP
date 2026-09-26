@@ -17,8 +17,6 @@
 ### Key Engineering Highlights
 - **Pure Domain Core:** Business rules and invariants live entirely within the `domain` layer with **zero dependencies** on Spring, JPA/Hibernate, or third-party frameworks.
 - **Modern Java 21 LTS:** Implements Java Records for immutable Value Objects and DTOs, Pattern Matching, Sealed Interfaces, and Virtual Threads for concurrent I/O.
-- **Architectural Guardrails (ArchUnit):** Automated fitness functions in the test suite to enforce dependency inversion and prevent framework leakage into the domain.
-- **Isolated Integration Testing:** Integration tests run against real PostgreSQL instances via **Testcontainers**, eliminating differences between development, CI, and production.
 - **Containerized & Cloud Ready:** Complete local orchestration with **Docker Compose** and incremental automated deployment to **AWS** (Ubuntu on Lightsail).
 
 ---
@@ -28,7 +26,7 @@
 The project strictly follows the **Ports and Adapters (Hexagonal Architecture)** pattern organized around domain concepts:
 
 ```text
-src/main/java/com/grandprix/predictor
+src/main/java/com/motogp/predictor
 │
 ├── domain/                               # 🟢 Pure Business Logic (Framework-independent)
 │   ├── model/                            # Aggregates, Entities, Value Objects
@@ -80,7 +78,7 @@ src/main/java/com/grandprix/predictor
 | :--- | :--- | :--- |
 | **Language** | Java 21 LTS | Pattern matching, records, virtual threads, sealed types |
 | **Framework** | Spring Boot 3.x | DI container, REST controllers, transaction management |
-| **Data & Persistence** | PostgreSQL 16, Spring Data JPA | Relational data persistence, indexed queries |
+| **Data & Persistence** | PostgreSQL 17, Spring Data JPA | Relational data persistence, indexed queries |
 | **DevOps & Cloud** | Docker, Docker Compose, AWS Lightsail | Local environment orchestration & cloud deployment |
 
 ---
