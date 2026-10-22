@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface UserRepositoryPort {
     List<User> getUsers();
     Optional<User> getUser(int id);
+    Optional<User> getUserByUsername(String username);
     boolean existsUserByUsername(String username);
     boolean existsUserByEmail(String email);
     boolean existsById(Long integer);

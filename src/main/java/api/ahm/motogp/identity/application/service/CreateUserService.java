@@ -4,6 +4,7 @@ import api.ahm.motogp.identity.application.exception.UserEmailAlreadyExistsExcep
 import api.ahm.motogp.identity.application.exception.UsernameAlreadyExistsException;
 import api.ahm.motogp.identity.application.port.in.CreateUserCommand;
 import api.ahm.motogp.identity.application.port.in.CreateUserUseCase;
+import api.ahm.motogp.identity.application.port.out.PasswordHasherPort;
 import api.ahm.motogp.identity.application.port.out.UserRepositoryPort;
 import api.ahm.motogp.identity.domain.model.User;
 import api.ahm.motogp.identity.domain.model.valueobjects.UserId;
@@ -21,11 +22,14 @@ public class CreateUserService implements CreateUserUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
     private final UserLeagueRepositoryPort userLeagueRepositoryPort;
+    private final PasswordHasherPort passwordHasherPort;
 
     public CreateUserService(UserRepositoryPort userRepositoryPort,
-                             UserLeagueRepositoryPort userLeagueRepositoryPort) {
+                             UserLeagueRepositoryPort userLeagueRepositoryPort,
+                             PasswordHasherPort passwordHasherPort) {
         this.userRepositoryPort = userRepositoryPort;
         this.userLeagueRepositoryPort = userLeagueRepositoryPort;
+        this.passwordHasherPort = passwordHasherPort;
     }
 
     @Override
@@ -33,7 +37,7 @@ public class CreateUserService implements CreateUserUseCase {
         User user = User.create(
                 userCommand.username(),
                 userCommand.email(),
-                userCommand.password(),
+                passwordHasherPort.hash(userCommand.password()),
                 userCommand.role()
         );
 

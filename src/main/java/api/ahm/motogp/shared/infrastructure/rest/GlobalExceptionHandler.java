@@ -5,6 +5,7 @@ import api.ahm.motogp.league.application.exception.UserLeagueIdNotFoundException
 import api.ahm.motogp.shared.infrastructure.adapter.in.GlobalErrorResponse;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNameAlreadyExistsException;
 import api.ahm.motogp.grandprix.application.exception.GrandPrixNotFoundException;
+import api.ahm.motogp.identity.application.exception.InvalidCredentialsException;
 import api.ahm.motogp.identity.application.exception.UserEmailAlreadyExistsException;
 import api.ahm.motogp.identity.application.exception.UsernameAlreadyExistsException;
 import api.ahm.motogp.identity.domain.exception.InvalidEmailException;
@@ -65,6 +66,11 @@ public class GlobalExceptionHandler {
     }
 
     // USERS
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<?> handleInvalidCredentialsException(InvalidCredentialsException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(bodyResponse(ex, HttpStatus.UNAUTHORIZED));
+    }
+
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<?> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bodyResponse(ex, HttpStatus.BAD_REQUEST));
