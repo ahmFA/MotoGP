@@ -40,6 +40,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_PRIVATE_KEY: file:/run/secrets/jwt_private_key
+    secrets:
+      - jwt_private_key
     expose:
       - "8080"
     depends_on:
@@ -49,3 +52,7 @@ volumes:
   postgres_data:
   caddy_data:
   caddy_config:
+
+secrets:
+  jwt_private_key:
+    file: ${JWT_PRIVATE_KEY_FILE:~./private.pem}
