@@ -20,8 +20,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/riders/**").authenticated()
-                        .requestMatchers("/riders/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,
+                                "/riders/**", "/teams/**", "/grand-prixes/**", "/users/**",
+                                "/events/*/results", "/championships/**", "/leagues/**"
+                                ).authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/leagues/{leagueId}/events/{eventId}/predictions").authenticated()
+                        .requestMatchers("/riders/**", "/teams/**", "/grand-prixes/**", "/users/**",
+                                "/events/*/results/bulk", "/championships/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 

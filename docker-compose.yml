@@ -55,4 +55,4 @@ volumes:
 
 secrets:
   jwt_private_key:
-    file: ${JWT_PRIVATE_KEY_FILE:~./private.pem}
+    file: ${JWT_PRIVATE_KEY_FILE:-./private.pem}

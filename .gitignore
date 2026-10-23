@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 private.pem
+Guia_OAuth2_JWT_SpringBoot.pdf
 
 ### STS ###
 .apt_generated
