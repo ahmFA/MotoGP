@@ -3,6 +3,8 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+private.pem
+Guia_OAuth2_JWT_SpringBoot.pdf
 
 ### STS ###
 .apt_generated
@@ -20,17 +22,10 @@ target/
 *.iml
 *.ipr
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
 ### VS Code ###
 .vscode/
 
 package-info.java
+
+### Docker local ###
+docker-compose.override.yml

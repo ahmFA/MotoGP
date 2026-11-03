@@ -13,7 +13,7 @@ final class UserMapper {
                 userRequest.username(),
                 userRequest.email(),
                 userRequest.password(),
-                userRequest.role()
+                User.Role.USER.name()
         );
     }
 

@@ -36,7 +36,7 @@ public class RiderController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<RiderResponse> getRiders(){
+    public List<RiderResponse> getRiders() {
         List<Rider> riders = listRiderUseCase.getRiders();
         return RiderMapper.toResponse(riders);
     }
